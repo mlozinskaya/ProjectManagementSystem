@@ -1,46 +1,33 @@
 package com.bootafoga.pms.controller;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
-
 import com.bootafoga.pms.model.ERole;
 import com.bootafoga.pms.model.Role;
 import com.bootafoga.pms.model.User;
 import com.bootafoga.pms.payload.request.LoginRequest;
 import com.bootafoga.pms.payload.request.SignupRequest;
-import com.bootafoga.pms.payload.response.JwtResponse;
 import com.bootafoga.pms.payload.response.MessageResponse;
 import com.bootafoga.pms.repository.RoleRepository;
 import com.bootafoga.pms.repository.UserRepository;
-import com.bootafoga.pms.security.jwt.JwtUtils;
-import com.bootafoga.pms.security.services.UserDetailsImpl;
+import com.bootafoga.pms.security.jwt.JwtTokenProvider;
 import jakarta.validation.Valid;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.*;
 
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 @RequestMapping("/api/auth")
 public class AuthController {
-	@Autowired
-	AuthenticationManager authenticationManager;
-
-	@Autowired
-	UserRepository userRepository;
+	private final AuthenticationManager authenticationManager;
+	private final UserRepository userRepository;
+	private final JwtTokenProvider jwtTokenProvider;
 
 	@Autowired
 	RoleRepository roleRepository;
@@ -49,27 +36,28 @@ public class AuthController {
 	PasswordEncoder encoder;
 
 	@Autowired
-	JwtUtils jwtUtils;
+	public AuthController(AuthenticationManager authenticationManager,
+						  UserRepository userRepository, JwtTokenProvider jwtTokenProvider) {
+		this.authenticationManager = authenticationManager;
+		this.userRepository = userRepository;
+		this.jwtTokenProvider = jwtTokenProvider;
+	}
 
 	@PostMapping("/signin")
 	public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
+		String username = loginRequest.getUsername();
 
-		Authentication authentication = authenticationManager.authenticate(
-				new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
+		authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, loginRequest.getPassword()));
 
-		SecurityContextHolder.getContext().setAuthentication(authentication);
-		String jwt = jwtUtils.generateJwtToken(authentication);
-		
-		UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
-		List<String> roles = userDetails.getAuthorities().stream()
-				.map(item -> item.getAuthority())
-				.collect(Collectors.toList());
+		User user = userRepository.findByUsername(username)
+				.orElseThrow(() -> new UsernameNotFoundException("User with name " + username + " not found"));
 
-		return ResponseEntity.ok(new JwtResponse(jwt,
-												 userDetails.getId(), 
-												 userDetails.getUsername(), 
-												 userDetails.getEmail(), 
-												 roles));
+		String token = jwtTokenProvider.createToken(username, user.getRoles());
+
+		Map<Object, Object> response = new HashMap<>();
+		response.put("username", username);
+		response.put("token", token);
+		return ResponseEntity.ok(response);
 	}
 
 	@PostMapping("/signup")
@@ -92,7 +80,7 @@ public class AuthController {
 							 encoder.encode(signUpRequest.getPassword()));
 
 		Set<String> strRoles = signUpRequest.getRole();
-		Set<Role> roles = new HashSet<>();
+		List<Role> roles = new ArrayList<>();
 
 		if (strRoles == null) {
 			Role userRole = roleRepository.findByName(ERole.ROLE_USER)

@@ -1,7 +1,7 @@
 package com.bootafoga.pms.security;
 
-import com.bootafoga.pms.security.jwt.AuthEntryPointJwt;
-import com.bootafoga.pms.security.jwt.AuthTokenFilter;
+import com.bootafoga.pms.security.jwt.JwtTokenFilter;
+import com.bootafoga.pms.security.jwt.JwtTokenProvider;
 import com.bootafoga.pms.security.services.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -19,25 +19,19 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 @Configuration
 public class WebSecurityConfig {
-    @Autowired
-    UserDetailsServiceImpl userDetailsService;
+    private final JwtTokenProvider jwtTokenProvider;
+    private final UserDetailsServiceImpl userDetailsService;
 
     @Autowired
-    private AuthEntryPointJwt unauthorizedHandler;
-
-    @Bean
-    public AuthTokenFilter authenticationJwtTokenFilter() {
-        return new AuthTokenFilter();
+    public WebSecurityConfig(JwtTokenProvider jwtTokenProvider,
+                             UserDetailsServiceImpl userDetailsService) {
+        this.jwtTokenProvider = jwtTokenProvider;
+        this.userDetailsService = userDetailsService;
     }
 
     @Bean
-    public DaoAuthenticationProvider authenticationProvider() {
-        DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
-
-        authProvider.setUserDetailsService(userDetailsService);
-        authProvider.setPasswordEncoder(passwordEncoder());
-
-        return authProvider;
+    public JwtTokenFilter authenticationJwtTokenFilter() {
+        return new JwtTokenFilter(jwtTokenProvider);
     }
 
     @Bean
@@ -51,14 +45,26 @@ public class WebSecurityConfig {
     }
 
     @Bean
+    public DaoAuthenticationProvider authenticationProvider() {
+        DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
+
+        authProvider.setUserDetailsService(userDetailsService);
+        authProvider.setPasswordEncoder(passwordEncoder());
+
+        return authProvider;
+    }
+
+    @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http.csrf().disable().cors().disable()
+        http
+                .httpBasic().disable()
+                .csrf().disable()
+                .cors().disable()
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers("/api/auth/**").permitAll()
                         .requestMatchers("/api/test/**").hasRole("USER")
                         .anyRequest().denyAll()
                 )
-                .exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
         http.authenticationProvider(authenticationProvider());
@@ -66,4 +72,5 @@ public class WebSecurityConfig {
 
         return http.build();
     }
+
 }
