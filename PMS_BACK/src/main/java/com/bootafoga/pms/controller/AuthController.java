@@ -19,6 +19,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 
 @CrossOrigin(origins = "*", maxAge = 3600)
@@ -53,10 +54,11 @@ public class AuthController {
 				.orElseThrow(() -> new UsernameNotFoundException("User with name " + username + " not found"));
 
 		String token = jwtTokenProvider.createToken(username, user.getRoles());
-
+		List<ERole> roles = user.getRoles().stream().map(Role::getName).collect(Collectors.toList());
 		Map<Object, Object> response = new HashMap<>();
 		response.put("username", username);
 		response.put("token", token);
+		response.put("roles", roles);
 		return ResponseEntity.ok(response);
 	}
 

@@ -1,0 +1,12 @@
+.profile-img {
+    margin-bottom: 30px;
+    width: 150px;
+    height: 150px;
+
+}
+
+.profile-name-form {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
