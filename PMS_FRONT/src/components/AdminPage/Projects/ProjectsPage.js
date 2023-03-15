@@ -20,23 +20,42 @@ class ProjectsPage extends Component {
         const buttons = [];
         buttons.push(
             <Link to={"/admin/projects/create"}>
-                <FontAwesomeIcon icon={faPlusCircle} className="action-icon-btn"/>
+                <FontAwesomeIcon icon={faPlusCircle} className="action-icon-btn" />
             </Link>
         )
         buttons.push(
             <Link to={"/admin/projects/create"}>
-                <FontAwesomeIcon icon={faPen} className="action-icon-btn"/>
+                <FontAwesomeIcon icon={faPen} className="action-icon-btn" />
             </Link>
         )
         buttons.push(<Link to={"/admin/projects/create"}>
-            <FontAwesomeIcon icon={faTrash} className="action-icon-btn"/>
+            <FontAwesomeIcon icon={faTrash} className="action-icon-btn" />
         </Link>)
         buttons.push(<Link to={"/admin/projects/create"} >
-            <FontAwesomeIcon icon={faEye} className="action-icon-btn"/>
+            <FontAwesomeIcon icon={faEye} className="action-icon-btn" />
         </Link>)
         buttons.push(<Link to={"/admin/projects/create"} >
-            <FontAwesomeIcon icon={faRotateRight} className="action-icon-btn"/>
+            <FontAwesomeIcon icon={faRotateRight} className="action-icon-btn" />
         </Link>)
+        return buttons;
+    }
+
+    renderManageButtons2() {
+        const buttons = [];
+
+        buttons.push(
+            <Link to={"/admin/projects/create"}>
+                <FontAwesomeIcon icon={faPen} className="action-icon-btn" />
+            </Link>
+        )
+        buttons.push(<Link to={"/admin/projects/create"} >
+            <FontAwesomeIcon icon={faEye} className="action-icon-btn" />
+        </Link>)
+
+        buttons.push(<Link to={"/admin/projects/create"}>
+            <FontAwesomeIcon icon={faTrash} className="action-icon-btn" />
+        </Link>)
+
         return buttons;
     }
 
@@ -60,19 +79,21 @@ class ProjectsPage extends Component {
         return <div className="admin-page-container">
             <div className="admin-page-title-container">
                 <div className="admin-page-label"> Проекты </div>
-                <button type="button" class="btn btn-primary">
-                    <Link to={"/admin/projects/create"} className="">
-                        <FontAwesomeIcon icon={faPlusCircle} className="link-icon" />
-                        <span>Создать проект</span>
-                    </Link>
-                </button>
+                <div>
+                    {this.renderManageButtons2()}
+                    <button type="button" class="btn btn-primary">
+                        <Link to={"/admin/projects/create"} className="">
+                            <FontAwesomeIcon icon={faPlusCircle} className="link-icon" />
+                            <span>Создать проект</span>
+                        </Link>
+                    </button>
+                </div>
+
             </div>
 
             <div style={{ marginTop: "20px" }}></div>
             <hr className="title-separate-line" />
-            {this.renderManageButtons()}
-            <br/>
-            <br/>
+            <br />
             <hr className="separate-line" />
             {this.renderProjects()}
         </div>
