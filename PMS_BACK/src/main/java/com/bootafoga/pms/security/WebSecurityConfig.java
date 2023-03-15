@@ -62,8 +62,8 @@ public class WebSecurityConfig {
                 .cors().disable()
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers("/api/auth/**").permitAll()
-                        .requestMatchers("/api/test/user/**").hasRole("USER")
-                        .requestMatchers("/api/test/admin/**").hasRole("ADMIN")
+                        .requestMatchers("/api/test/**").permitAll()
+                        .requestMatchers("/project/list/**").permitAll()
                         .anyRequest().denyAll()
                 )
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);

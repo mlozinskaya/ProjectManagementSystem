@@ -1,0 +1,24 @@
+.btn-create-project {
+    color: white;
+}
+
+.project-form-container {
+    background-color: #e9ecef;
+    width: 100%;
+    height: 200px;
+    margin: 20px;
+    padding: 20px;
+    border-radius: 3px;
+}
+
+.project-row {
+    padding: 10px 10px;
+}
+
+.project-row:hover {
+    background-color: #e9ecef;
+}
+
+.row-selected {
+    background-color: #e9ecef;
+}

@@ -1,7 +1,7 @@
-import SET_SESSION_SELECTED_PROJECT from "./constants";
+import * as act from "./constants";
 
 const initialState = {
-  projects: ["UOD", "ETU", "SBER", "AVITO"],
+  projects: [],
   selectedProject: null
 };
 
@@ -9,7 +9,13 @@ export default function (state = initialState, action) {
   const { type, payload } = action;
 
   switch (type) {
-    case SET_SESSION_SELECTED_PROJECT:
+    case act.GET_PROJECTS:
+      return {
+          ...state,
+          projects: action.payload
+      };
+
+    case act.SET_SESSION_SELECTED_PROJECT:
       return { ...state, selectedProject: payload };
 
     default:

@@ -4,7 +4,9 @@ import { Router, Switch, Route, Link } from "react-router-dom";
 
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./App.css";
-import "./styles/common.css"
+import "./styles/main.css"
+import "./styles/adminPage.css"
+import "./styles/adminProjectsPage.css"
 import "./styles/errorPage.css"
 import "./styles/forumPage.css"
 import "./styles/chatPage.css"
@@ -16,7 +18,7 @@ import Login from "./components/Auth/LoginForm";
 import Register from "./components/Auth/RegisterForm";
 import HomePage from "./components/HomePage/HomePage";
 import Profile from "./components/ProfilePage/ProfilePage";
-import AdminPage from "./components/AdminPage/AdminPage";
+import ProjectsPage from "./components/AdminPage/Projects/ProjectsPage";
 
 import BoardUser from "./components/Boards/board-user.component";
 import BoardModerator from "./components/Boards/board-moderator.component";
@@ -40,7 +42,10 @@ import EventBus from "./common/EventBus";
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faSignOut } from '@fortawesome/free-solid-svg-icons'
-import SideBar from "./components/Main/SideBar";
+import WorkspaceSideBar from "./components/Main/WorkspaceSideBar";
+import UsersPage from "./components/AdminPage/UsersPage";
+import RightsPage from "./components/AdminPage/RightsPage";
+import CreateProjectForm from "./components/AdminPage/Projects/CreateProjectForm";
 
 class App extends Component {
   constructor(props) {
@@ -92,6 +97,18 @@ class App extends Component {
     });
   }
 
+  renderHome() {
+    return (
+      <div className="navbar-nav">
+        <li className="nav-item">
+          <Link to={"/"} className="nav-link">
+            Рабочая область
+          </Link>
+        </li>
+      </div>
+    )
+  }
+
   renderModeratorBoard() {
     const { showModeratorBoard, showAdminBoard } = this.state;
 
@@ -99,8 +116,8 @@ class App extends Component {
       <div className="navbar-nav mr-auto">
         {showAdminBoard && (
           <li className="nav-item">
-            <Link to={"/adm"} className="nav-link">
-              Admin Board
+            <Link to={"/admin/projects"} className="nav-link">
+              Панель администратора
             </Link>
           </li>
         )}
@@ -108,7 +125,7 @@ class App extends Component {
         {showModeratorBoard && (
           <li className="nav-item">
             <Link to={"/mod"} className="nav-link">
-              Moderator Board
+              Панель модератора
             </Link>
           </li>
         )}
@@ -171,6 +188,7 @@ class App extends Component {
 
     return (
       <nav className="navbar navbar-expand navbar-dark navbar_bg header">
+        {this.renderHome()}
         {this.renderModeratorBoard()}
         {currentUser ? this.renderAuthorizedUserButtons() : this.renderAuthButtons()}
       </nav>
@@ -178,40 +196,39 @@ class App extends Component {
   }
 
   renderPage() {
-    return <Switch>
-      <Route exact path={["/", "/home"]} component={HomePage} />
-      <Route exact path="/login" component={Login} />
-      <Route exact path="/register" component={Register} />
-      <Route exact path="/profile" component={Profile} />
-      <Route exact path="/adm" component={AdminPage} />
+    return <div className="page">
+      <Switch>
+        <Route exact path={["/", "/home"]} component={HomePage} />
+        <Route exact path="/login" component={Login} />
+        <Route exact path="/register" component={Register} />
+        <Route exact path="/profile" component={Profile} />
+        <Route exact path="/admin/projects" component={ProjectsPage} />
+        <Route exact path="/admin/projects/create" component={CreateProjectForm} />
+        <Route exact path="/admin/users" component={UsersPage} />
+        <Route exact path="/admin/rights" component={RightsPage} />
 
-      <Route path="/user" component={BoardUser} />
-      <Route path="/modds" component={BoardModerator} />
-      <Route path="/admin" component={BoardAdmin} />
-      <Route path="/forum/theme/:id" render={(props) => (
-        <ThemePage id={props.match.params.id} />
-      )} />
-      <Route path="/forum/add/:id" render={(props) => (
-        <AddTheme id={props.match.params.id} />
-      )} />
-      <Route path="/forum/add" component={AddTheme} />
-      <Route path="/forum" component={ForumPage} />
-      <Route path="/chat" component={ChatPage} />
-    </Switch>
+        <Route path="/user" component={BoardUser} />
+        <Route path="/modds" component={BoardModerator} />
+        <Route path="/admin" component={BoardAdmin} />
+        <Route path="/forum/theme/:id" render={(props) => (
+          <ThemePage id={props.match.params.id} />
+        )} />
+        <Route path="/forum/add/:id" render={(props) => (
+          <AddTheme id={props.match.params.id} />
+        )} />
+        <Route path="/forum/add" component={AddTheme} />
+        <Route path="/forum" component={ForumPage} />
+        <Route path="/chat" component={ChatPage} />
+      </Switch>
+    </div>
+
   }
 
   render() {
     return (
       <Router history={history}>
         {this.renderHeader()}
-        <div className="screen-container">
-          <div className="side-bar-container">
-            <SideBar />
-          </div>
-          <div className="page-container">
-            {this.renderPage()}
-          </div>
-        </div>
+        {this.renderPage()}
       </Router>
     );
   }

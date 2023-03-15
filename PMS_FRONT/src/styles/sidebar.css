@@ -1,3 +1,11 @@
+.side-bar-container {
+    min-width: 220px;
+    width: 220px;
+    height: 100%;
+    background-color: #8071bd;
+    color: #ffffff;
+}
+
 .sidebar-dropdown {
     padding-left: 35px;
     padding-top: 30px;
@@ -11,4 +19,15 @@
 .sidebar-links {
     padding-left: 20px;
     padding-top: 15px;
+}
+
+.link-container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.link-icon {
+    margin-left: -15px;
+    width: 40px;
 }

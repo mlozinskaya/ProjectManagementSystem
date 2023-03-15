@@ -62,6 +62,24 @@ public class AuthController {
 		return ResponseEntity.ok(response);
 	}
 
+	@PostMapping("/test")
+	public ResponseEntity<?> test(@Valid @RequestBody LoginRequest loginRequest) {
+		String username = loginRequest.getUsername();
+
+		authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, loginRequest.getPassword()));
+
+		User user = userRepository.findByUsername(username)
+				.orElseThrow(() -> new UsernameNotFoundException("User with name " + username + " not found"));
+
+		String token = jwtTokenProvider.createToken(username, user.getRoles());
+		List<ERole> roles = user.getRoles().stream().map(Role::getName).collect(Collectors.toList());
+		Map<Object, Object> response = new HashMap<>();
+		response.put("username", username);
+		response.put("token", token);
+		response.put("roles", roles);
+		return ResponseEntity.ok(response);
+	}
+
 	@PostMapping("/signup")
 	public ResponseEntity<?> registerUser(@Valid @RequestBody SignupRequest signUpRequest) {
 		if (userRepository.existsByUsername(signUpRequest.getUsername())) {

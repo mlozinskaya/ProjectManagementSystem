@@ -2,14 +2,21 @@ import React, { Component, useState } from "react";
 import { bindActionCreators } from 'redux'
 import { connect } from "react-redux";
 import * as actions from "./actions"
+import AdminSideBar from "../Main/AdminSideBar";
 
 
+class UsersPage extends Component {
 
-class AdminPage extends Component {
+    renderContent() {
+        return <div className="admin-page-container">
+            <h4> Участники </h4>
+        </div>
+    }
 
     render() {
-        return <div>
-            <h4>Панель администратора</h4>
+        return <div className="page-container">
+            <AdminSideBar />
+            {this.renderContent()}
         </div>
     }
 }
@@ -32,4 +39,4 @@ function mapDispatchToProps(dispatch) {
 export default connect(
     mapStateToProps,
     mapDispatchToProps
-)(AdminPage)
+)(UsersPage)

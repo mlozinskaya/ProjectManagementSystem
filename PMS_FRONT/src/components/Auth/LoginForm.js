@@ -7,8 +7,11 @@ import CheckButton from "react-validation/build/button";
 
 import { connect } from "react-redux";
 import { login } from "./actions";
-
-import { notEmpty } from "./validators";
+import {
+  notEmpty, usernameValidator, firstNameValidator,
+  secondNameValidator, passwordValidator, emailValidator
+}
+  from "../utils/validators";
 
 class Login extends Component {
   constructor(props) {

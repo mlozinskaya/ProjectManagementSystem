@@ -9,10 +9,10 @@ import { faTableList } from '@fortawesome/free-solid-svg-icons'
 import { faScroll, faStarHalfStroke } from '@fortawesome/free-solid-svg-icons'
 import DropdownWithSearch from "../Elements/DropdownWithSearch";
 
-class SideBar extends Component {
+class WorkspaceSideBar extends Component {
 
     componentDidMount() {
-        console.log(this.props)
+        this.props.actions.getProjects();
         const lastSelectedProject = localStorage.getItem("lastSelectedProject");
 
         if (lastSelectedProject) {
@@ -28,30 +28,37 @@ class SideBar extends Component {
     render() {
         const { session } = this.props;
         const selectedProject = session.selectedProject || "Выберите проект";
+        const projectNames = session.projects.map(item => item.name);
 
-        return <div>
+        return <div className="side-bar-container">
             <div className="sidebar-dropdown">
-                <DropdownWithSearch values={session.projects} selected={selectedProject}
+                <DropdownWithSearch values={projectNames} selected={selectedProject}
                     onClick={this.handleSelectProject.bind(this)}
                 />
             </div>
 
-            <hr className="sidebar-separate-line"/>
+            <hr className="sidebar-separate-line" />
 
             <div className="sidebar-links">
-                <Link to={"/"} className="nav-link">
-                    <FontAwesomeIcon icon={faTableList}/>
-                    <span style={{ marginLeft: 20 }}>Backlog</span>
+                
+                <Link to={"/"} className="nav-link link-container">
+                    <FontAwesomeIcon icon={faStarHalfStroke} className="link-icon" />
+                    <span>Confluence</span>
                 </Link>
 
-                <Link to={"/"} className="nav-link">
-                    <FontAwesomeIcon icon={faScroll} />
-                    <span style={{ marginLeft: 20 }}>Dashboard</span>
+                <Link to={"/"} className="nav-link link-container">
+                    <FontAwesomeIcon icon={faTableList} className="link-icon"/>
+                    <span>Backlog</span>
                 </Link>
 
-                <Link to={"/"} className="nav-link">
-                    <FontAwesomeIcon icon={faStarHalfStroke} />
-                    <span style={{ marginLeft: 20 }}>Control panel</span>
+                <Link to={"/"} className="nav-link link-container">
+                    <FontAwesomeIcon icon={faScroll} className="link-icon"/>
+                    <span>Dashboard</span>
+                </Link>
+
+                <Link to={"/"} className="nav-link link-container">
+                    <FontAwesomeIcon icon={faStarHalfStroke} className="link-icon"/>
+                    <span>Control panel</span>
                 </Link>
             </div>
 
@@ -77,4 +84,4 @@ function mapDispatchToProps(dispatch) {
 export default connect(
     mapStateToProps,
     mapDispatchToProps
-)(SideBar)
+)(WorkspaceSideBar)

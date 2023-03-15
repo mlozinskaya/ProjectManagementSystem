@@ -9,7 +9,7 @@ import {
   notEmpty, usernameValidator, firstNameValidator,
   secondNameValidator, passwordValidator, emailValidator
 }
-  from "./validators";
+  from "../utils/validators";
 
 
 
