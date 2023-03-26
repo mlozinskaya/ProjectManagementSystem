@@ -2,6 +2,7 @@ import React, { Component, useState } from "react";
 import { bindActionCreators } from 'redux'
 import { connect } from "react-redux";
 import * as actions from "../actions"
+import * as workspaceActions from "../../WorkSpacePage/actions"
 import AdminSideBar from "../../Main/AdminSideBar";
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -16,45 +17,63 @@ class ProjectsPage extends Component {
         this.props.actions.setSelectedProject(project);
     }
 
-    renderManageButtons() {
-        const buttons = [];
-        buttons.push(
-            <Link to={"/admin/projects/create"}>
-                <FontAwesomeIcon icon={faPlusCircle} className="action-icon-btn" />
-            </Link>
-        )
-        buttons.push(
-            <Link to={"/admin/projects/create"}>
-                <FontAwesomeIcon icon={faPen} className="action-icon-btn" />
-            </Link>
-        )
-        buttons.push(<Link to={"/admin/projects/create"}>
-            <FontAwesomeIcon icon={faTrash} className="action-icon-btn" />
-        </Link>)
-        buttons.push(<Link to={"/admin/projects/create"} >
-            <FontAwesomeIcon icon={faEye} className="action-icon-btn" />
-        </Link>)
-        buttons.push(<Link to={"/admin/projects/create"} >
-            <FontAwesomeIcon icon={faRotateRight} className="action-icon-btn" />
-        </Link>)
-        return buttons;
+    handleOnClickTrash() {
+        if (!this.props.adminPage.selectedProject) {
+            return;
+        }
+
+        const selectedProject = this.props.adminPage.selectedProject;
+        const workspaceSelectedProject = this.props.workspace.selectedProject;
+
+        if (selectedProject && selectedProject.id) {
+            if (window.confirm("Вы действительно хотите удалить проект \"" + selectedProject.name + "\"?")) {
+                this.props.actions.removeProject(selectedProject);
+            }
+        }
+
+        if (workspaceSelectedProject === selectedProject.name) {
+            this.props.workspaceActions.clearSelectedProject();
+            localStorage.removeItem("lastSelectedProject");
+        }
+
     }
 
-    renderManageButtons2() {
+    handleOpenSubmitForm(mode, url) {
+        if ((mode === "EDIT" || mode === "READ") && !this.props.adminPage.selectedProject) {
+            return;
+        }
+
+        if ((mode === "EDIT" || mode === "READ") && this.props.adminPage.selectedProject) {
+            this.props.actions.setProjectForEdit(this.props.adminPage.selectedProject);
+        }
+
+        this.props.actions.setSubmitFormMode(mode);
+        this.props.history.replace(url);
+    }
+
+    renderManageButtons() {
         const buttons = [];
 
         buttons.push(
-            <Link to={"/admin/projects/create"}>
-                <FontAwesomeIcon icon={faPen} className="action-icon-btn" />
-            </Link>
+            <span onClick={this.handleOpenSubmitForm.bind(this, "EDIT", "/admin/projects/edit")}>
+                <FontAwesomeIcon icon={faPen} className="action-icon-btn" disabled />
+            </span>
         )
-        buttons.push(<Link to={"/admin/projects/create"} >
+        buttons.push(<span onClick={this.handleOpenSubmitForm.bind(this, "READ", "/admin/projects/read")}>
             <FontAwesomeIcon icon={faEye} className="action-icon-btn" />
-        </Link>)
+        </span>)
 
-        buttons.push(<Link to={"/admin/projects/create"}>
+        buttons.push(<span onClick={this.handleOnClickTrash.bind(this)}>
             <FontAwesomeIcon icon={faTrash} className="action-icon-btn" />
-        </Link>)
+        </span>)
+
+        buttons.push(<button type="button" class="btn btn-primary" 
+                onClick={this.handleOpenSubmitForm.bind(this, "CREATE", "/admin/projects/create")}>
+            <span>
+                <FontAwesomeIcon icon={faPlusCircle} className="link-icon" />
+                <span>Создать проект</span>
+            </span>
+        </button>)
 
         return buttons;
     }
@@ -80,13 +99,8 @@ class ProjectsPage extends Component {
             <div className="admin-page-title-container">
                 <div className="admin-page-label"> Проекты </div>
                 <div>
-                    {this.renderManageButtons2()}
-                    <button type="button" class="btn btn-primary">
-                        <Link to={"/admin/projects/create"} className="">
-                            <FontAwesomeIcon icon={faPlusCircle} className="link-icon" />
-                            <span>Создать проект</span>
-                        </Link>
-                    </button>
+                    {this.renderManageButtons()}
+
                 </div>
 
             </div>
@@ -108,18 +122,19 @@ class ProjectsPage extends Component {
 }
 
 function mapStateToProps(state) {
-    const { auth, session, adminPage } = state;
+    const { auth, adminPage, workspace } = state;
 
     return {
         auth,
-        session,
-        adminPage
+        adminPage,
+        workspace
     };
 }
 
 function mapDispatchToProps(dispatch) {
     return {
-        actions: bindActionCreators(actions, dispatch)
+        actions: bindActionCreators(actions, dispatch),
+        workspaceActions: bindActionCreators(workspaceActions, dispatch)
     }
 }
 

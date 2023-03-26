@@ -1,11 +1,11 @@
 package com.bootafoga.pms.controller;
 
 import com.bootafoga.pms.model.Project;
+import com.bootafoga.pms.payload.dto.ProjectDTO;
+import com.bootafoga.pms.payload.response.MessageResponse;
 import com.bootafoga.pms.service.ProjectService;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -24,4 +24,30 @@ public class ProjectController {
         return (List<Project>) projectService.findAll();
     }
 
+    @PostMapping("/save")
+    public ResponseEntity<?> save(@RequestBody ProjectDTO projectDTO) {
+        Project newProject = mapProjectDtoToEntity(projectDTO);
+        projectService.save(newProject);
+
+        return ResponseEntity.ok(new MessageResponse("Project saved successfully!"));
+    }
+
+    @PostMapping("/remove")
+    public ResponseEntity<?> remove(@RequestBody ProjectDTO projectDTO) {
+        Project project = projectService.findById(projectDTO.getId()).orElse(null);
+
+        if (project != null){
+            projectService.remove(project);
+        }
+
+        return ResponseEntity.ok(new MessageResponse("Project removed successfully!"));
+    }
+
+    private Project mapProjectDtoToEntity(ProjectDTO dto){
+        Project project = new Project();
+        project.setId(dto.getId());
+        project.setName(dto.getName());
+        project.setKey(dto.getKey());
+        return project;
+    }
 }

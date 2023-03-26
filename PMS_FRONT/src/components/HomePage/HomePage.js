@@ -1,15 +1,16 @@
-import React, { Component, useState } from "react";
-import * as actions from "./actions"
+import React, { Component } from "react";
+import { bindActionCreators } from 'redux'
 import { connect } from "react-redux";
 
-import Form from 'react-bootstrap/Form';
-import WorkspaceSideBar from "../Main/WorkspaceSideBar";
+import * as actions from "./actions"
+
+import WorkspaceSideBar from "../WorkSpacePage/WorkspaceSideBar";
 
 
 class HomePage extends Component {
 
     renderContent(){
-        return <div> abcde </div>
+        return <div> Для начала работы выберите проект</div>
     }
 
     render() {
@@ -20,11 +21,21 @@ class HomePage extends Component {
     }
 }
 
-const mapStateToProps = state => ({
-    state: state.homeReducer
-});
+function mapStateToProps(state) {
+    const { workspace } = state;
+
+    return {
+        workspace
+    };
+}
+
+function mapDispatchToProps(dispatch) {
+    return {
+        actions: bindActionCreators(actions, dispatch)
+    }
+}
 
 export default connect(
-    mapStateToProps, 
-    {actions}
+    mapStateToProps,
+    mapDispatchToProps
 )(HomePage)

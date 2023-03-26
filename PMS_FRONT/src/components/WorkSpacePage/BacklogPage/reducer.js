@@ -1,12 +1,14 @@
 import * as act from "./constants";
 
 const initialState = {
+  tasks: []
 };
 
-export default function main(state = initialState, action) {
+export default function backlog(state = initialState, action) {
   const { type, payload } = action;
 
   switch (type) {
+
     default:
       return state;
   }

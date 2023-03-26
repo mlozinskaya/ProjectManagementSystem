@@ -16,6 +16,8 @@ public class Project {
     @Size(max = 20)
     private String name;
 
+    private String projKey;
+
     public Project() {
     }
 
@@ -33,5 +35,13 @@ public class Project {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getKey() {
+        return projKey;
+    }
+
+    public void setKey(String projKey) {
+        this.projKey = projKey;
     }
 }

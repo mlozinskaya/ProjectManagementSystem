@@ -1,5 +1,5 @@
 const initialState = { 
-    title: "title"
+    
 };
 
 export default function home(state = initialState, action) {

@@ -8,8 +8,6 @@ import "./styles/main.css"
 import "./styles/adminPage.css"
 import "./styles/adminProjectsPage.css"
 import "./styles/errorPage.css"
-import "./styles/forumPage.css"
-import "./styles/chatPage.css"
 import "./styles/header.css"
 import "./styles/sidebar.css"
 import "./styles/userProfile.css"
@@ -20,13 +18,7 @@ import HomePage from "./components/HomePage/HomePage";
 import Profile from "./components/ProfilePage/ProfilePage";
 import ProjectsPage from "./components/AdminPage/Projects/ProjectsPage";
 
-import BoardUser from "./components/Boards/board-user.component";
-import BoardModerator from "./components/Boards/board-moderator.component";
-import BoardAdmin from "./components/Boards/board-admin.component";
-import ForumPage from "./components/ForumPage/ForumPage";
-import AddTheme from "./components/ForumPage/AddTheme";
-import ThemePage from "./components/ForumPage/ThemePage";
-import ChatPage from "./components/ChatPage/ChatPage";
+import BacklogPage from "./components/WorkSpacePage/BacklogPage/BacklogPage"
 
 import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
@@ -34,7 +26,6 @@ import Navbar from 'react-bootstrap/Navbar';
 import NavDropdown from 'react-bootstrap/NavDropdown';
 
 import { logout } from "./components/Auth/actions";
-import { clearMessage } from "./actions/message";
 
 import { history } from './helpers/history';
 
@@ -42,10 +33,12 @@ import EventBus from "./common/EventBus";
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faSignOut } from '@fortawesome/free-solid-svg-icons'
-import WorkspaceSideBar from "./components/Main/WorkspaceSideBar";
 import UsersPage from "./components/AdminPage/UsersPage";
 import RightsPage from "./components/AdminPage/RightsPage";
 import CreateProjectForm from "./components/AdminPage/Projects/CreateProjectForm";
+import ConfluencePage from "./components/WorkSpacePage/ConfluencePage/ConfluencePage";
+import DashboardPage from "./components/WorkSpacePage/DashboardPage/DashboardPage";
+import ControlPanelPage from "./components/WorkSpacePage/ControlPanelPage/ControlPanelPage";
 
 class App extends Component {
   constructor(props) {
@@ -57,11 +50,6 @@ class App extends Component {
       showAdminBoard: false,
       currentUser: undefined,
     };
-
-    history.listen((location) => {
-      // clear message when changing location
-      props.dispatch(clearMessage());
-    });
   }
 
   componentDidMount() {
@@ -97,11 +85,14 @@ class App extends Component {
     });
   }
 
-  renderHome() {
+  renderHomeBtn() {
+    const { workspace } = this.props;
+    const homeLink = workspace.selectedProject ? "/" + workspace.selectedProject + "/backlog" : "/"
+
     return (
       <div className="navbar-nav">
         <li className="nav-item">
-          <Link to={"/"} className="nav-link">
+          <Link to={homeLink} className="nav-link">
             Рабочая область
           </Link>
         </li>
@@ -109,7 +100,7 @@ class App extends Component {
     )
   }
 
-  renderModeratorBoard() {
+  renderAdminBtns() {
     const { showModeratorBoard, showAdminBoard } = this.state;
 
     return (
@@ -133,7 +124,7 @@ class App extends Component {
     )
   }
 
-  renderAuthorizedUserButtons() {
+  renderAuthorizedUserBtns() {
     const { currentUser } = this.state;
 
     return (
@@ -149,7 +140,11 @@ class App extends Component {
                   drop={'start'}
                   menuVariant="dark"
                 >
-                  <NavDropdown.Item href="/profile">Profile</NavDropdown.Item>
+                  <NavDropdown.Item>
+                    <Link to={"/profile"}>
+                      Profile
+                    </Link>
+                  </NavDropdown.Item>
 
                   <NavDropdown.Divider />
 
@@ -165,7 +160,7 @@ class App extends Component {
     )
   }
 
-  renderAuthButtons() {
+  renderAuthBtns() {
     return (
       <div className="navbar-nav ml-auto">
         <li className="nav-item">
@@ -188,9 +183,9 @@ class App extends Component {
 
     return (
       <nav className="navbar navbar-expand navbar-dark navbar_bg header">
-        {this.renderHome()}
-        {this.renderModeratorBoard()}
-        {currentUser ? this.renderAuthorizedUserButtons() : this.renderAuthButtons()}
+        {this.renderHomeBtn()}
+        {this.renderAdminBtns()}
+        {currentUser ? this.renderAuthorizedUserBtns() : this.renderAuthBtns()}
       </nav>
     )
   }
@@ -199,26 +194,31 @@ class App extends Component {
     return <div className="page">
       <Switch>
         <Route exact path={["/", "/home"]} component={HomePage} />
+
         <Route exact path="/login" component={Login} />
         <Route exact path="/register" component={Register} />
         <Route exact path="/profile" component={Profile} />
+
         <Route exact path="/admin/projects" component={ProjectsPage} />
         <Route exact path="/admin/projects/create" component={CreateProjectForm} />
+        <Route exact path="/admin/projects/edit" component={CreateProjectForm} />
+        <Route exact path="/admin/projects/read" component={CreateProjectForm} />
         <Route exact path="/admin/users" component={UsersPage} />
         <Route exact path="/admin/rights" component={RightsPage} />
 
-        <Route path="/user" component={BoardUser} />
-        <Route path="/modds" component={BoardModerator} />
-        <Route path="/admin" component={BoardAdmin} />
-        <Route path="/forum/theme/:id" render={(props) => (
-          <ThemePage id={props.match.params.id} />
+        <Route path="/:project/confluence" render={(props) => (
+          <ConfluencePage project={props.match.params.project} />
         )} />
-        <Route path="/forum/add/:id" render={(props) => (
-          <AddTheme id={props.match.params.id} />
+        <Route path="/:project/backlog" render={(props) => (
+          <BacklogPage project={props.match.params.project} />
         )} />
-        <Route path="/forum/add" component={AddTheme} />
-        <Route path="/forum" component={ForumPage} />
-        <Route path="/chat" component={ChatPage} />
+        <Route path="/:project/dashboard" render={(props) => (
+          <DashboardPage project={props.match.params.project} />
+        )} />
+        <Route path="/:project/controlPanel" render={(props) => (
+          <ControlPanelPage project={props.match.params.project} />
+        )} />
+
       </Switch>
     </div>
 
@@ -236,8 +236,10 @@ class App extends Component {
 
 function mapStateToProps(state) {
   const { user } = state.auth;
+  const { workspace } = state;
+
   return {
-    user,
+    user, workspace
   };
 }
 

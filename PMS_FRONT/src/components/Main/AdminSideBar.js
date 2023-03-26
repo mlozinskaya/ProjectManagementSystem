@@ -1,24 +1,20 @@
 import React, { Component, useState } from "react";
 import { bindActionCreators } from 'redux'
-import * as acts from "./actions"
+import * as actions from "./actions"
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faTableList } from '@fortawesome/free-solid-svg-icons'
 import { faScroll, faStarHalfStroke } from '@fortawesome/free-solid-svg-icons'
-import DropdownWithSearch from "../Elements/DropdownWithSearch";
+
 
 class AdminSideBar extends Component {
 
-    componentDidMount() {
-
-    }
 
     render() {
 
         return <div className="side-bar-container">
-
             <hr className="sidebar-separate-line" />
 
             <div className="sidebar-links">
@@ -49,17 +45,16 @@ class AdminSideBar extends Component {
 }
 
 function mapStateToProps(state) {
-    const { auth, session } = state;
+    const { workspace } = state;
 
     return {
-        auth,
-        session
+        workspace
     };
 }
 
 function mapDispatchToProps(dispatch) {
     return {
-        actions: bindActionCreators(acts, dispatch)
+        actions: bindActionCreators(actions, dispatch)
     }
 }
 
