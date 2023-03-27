@@ -1,4 +1,4 @@
-import React, { Component, useState } from "react";
+import React, { Component } from "react";
 import { bindActionCreators } from 'redux'
 import { connect } from "react-redux";
 import * as actions from "../actions"
@@ -10,28 +10,38 @@ import Input from "react-validation/build/input";
 class CreateProjectForm extends Component {
 
     getFormMode() {
-        return this.props.adminPage.submitFormMode;
+        return this.props.mode;
     }
 
     handleSaveProject(e) {
         e.preventDefault();
 
-        const { project } = this.props.adminPage;
-        this.props.actions.saveProject(project);
+        const { openedProject } = this.props.adminPage;
+        this.props.actions.saveProject(openedProject);
     }
 
     handleCancel(e) {
         e.preventDefault();
+
         this.props.history.replace("/admin/projects")
-        this.props.actions.clearEditProjectForm();
-        this.props.actions.clearSelectedProject();
+        this.props.actions.clearOpenedProject();
+    }
+
+    getPageTitle(){
+        const mode = this.getFormMode();
+        const title = mode === "create" ? "Создать проект" : (mode === "read" ? "Просмотреть" : "Изменить") + " информацию о проекте";
+        return title;
+    }
+
+    isDisabled(){
+        const mode = this.getFormMode();
+        return mode === "read";
     }
 
     renderContent() {
-        const { project } = this.props.adminPage;
-        const mode = this.getFormMode();
-        const title = mode === "CREATE" ? "Создать проект" : (mode == "READ" ? "Просмотреть" : "Изменить") + " информацию о проекте";
-        const disabled = mode === "READ";
+        const { openedProject } = this.props.adminPage;
+        const title = this.getPageTitle();
+        const disabled = this.isDisabled();
 
         return <div className="project-form-container">
             <h4> {title} </h4>
@@ -42,7 +52,7 @@ class CreateProjectForm extends Component {
                     <Input
                         disabled={disabled}
                         type="text" className="form-control"
-                        name="proj-name" value={project.name}
+                        name="proj-name" value={openedProject.name}
                         onChange={(v) => this.props.actions.setProjectName(v.target.value)}
                     />
                 </div>
@@ -52,7 +62,7 @@ class CreateProjectForm extends Component {
                     <Input
                         disabled={disabled}
                         type="text" className="form-control"
-                        name="proj-key" value={project.key}
+                        name="proj-key" value={openedProject.key}
                         onChange={(v) => this.props.actions.setProjectKey(v.target.value)}
                     />
                 </div>
@@ -62,7 +72,7 @@ class CreateProjectForm extends Component {
                     <Input
                         disabled={disabled}
                         type="text" className="form-control"
-                        name="proj-lead" value={project.lead}
+                        name="proj-lead" value={openedProject.lead}
                         onChange={(v) => this.props.actions.setProjectLead(v.target.value)}
                     />
                 </div>
@@ -78,8 +88,6 @@ class CreateProjectForm extends Component {
     }
 
     render() {
-        this.getFormMode();
-
         return <div className="page-container">
             <AdminSideBar />
             {this.renderContent()}
@@ -88,10 +96,10 @@ class CreateProjectForm extends Component {
 }
 
 function mapStateToProps(state) {
-    const { auth, session, adminPage } = state;
+    const { auth, adminPage } = state;
 
     return {
-        auth, session, adminPage
+        auth, adminPage
     };
 }
 

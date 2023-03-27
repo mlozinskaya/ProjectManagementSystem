@@ -11,6 +11,7 @@ import "./styles/errorPage.css"
 import "./styles/header.css"
 import "./styles/sidebar.css"
 import "./styles/userProfile.css"
+import "./styles/backlog.css"
 
 import Login from "./components/Auth/LoginForm";
 import Register from "./components/Auth/RegisterForm";
@@ -19,6 +20,7 @@ import Profile from "./components/ProfilePage/ProfilePage";
 import ProjectsPage from "./components/AdminPage/Projects/ProjectsPage";
 
 import BacklogPage from "./components/WorkSpacePage/BacklogPage/BacklogPage"
+import BacklogTaskForm from "./components/WorkSpacePage/BacklogPage/BacklogTaskForm"
 
 import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
@@ -35,7 +37,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faSignOut } from '@fortawesome/free-solid-svg-icons'
 import UsersPage from "./components/AdminPage/UsersPage";
 import RightsPage from "./components/AdminPage/RightsPage";
-import CreateProjectForm from "./components/AdminPage/Projects/CreateProjectForm";
+import ProjectForm from "./components/AdminPage/Projects/ProjectForm";
 import ConfluencePage from "./components/WorkSpacePage/ConfluencePage/ConfluencePage";
 import DashboardPage from "./components/WorkSpacePage/DashboardPage/DashboardPage";
 import ControlPanelPage from "./components/WorkSpacePage/ControlPanelPage/ControlPanelPage";
@@ -199,24 +201,33 @@ class App extends Component {
         <Route exact path="/register" component={Register} />
         <Route exact path="/profile" component={Profile} />
 
+        <Route path="/admin/projects/:mode" render={(props) => (
+          <ProjectForm history={props.history} mode={props.match.params.mode}/>
+        )} />
+
         <Route exact path="/admin/projects" component={ProjectsPage} />
-        <Route exact path="/admin/projects/create" component={CreateProjectForm} />
-        <Route exact path="/admin/projects/edit" component={CreateProjectForm} />
-        <Route exact path="/admin/projects/read" component={CreateProjectForm} />
         <Route exact path="/admin/users" component={UsersPage} />
         <Route exact path="/admin/rights" component={RightsPage} />
 
         <Route path="/:project/confluence" render={(props) => (
-          <ConfluencePage project={props.match.params.project} />
+          <ConfluencePage project={props.match.params.project} history={props.history}/>
         )} />
+        
+        
+        <Route path="/:project/backlog/:mode" render={(props) => (
+          <BacklogTaskForm project={props.match.params.project} history={props.history} mode={props.match.params.mode}/>
+        )} />
+
         <Route path="/:project/backlog" render={(props) => (
-          <BacklogPage project={props.match.params.project} />
+          <BacklogPage project={props.match.params.project} history={props.history}/>
         )} />
+
+
         <Route path="/:project/dashboard" render={(props) => (
-          <DashboardPage project={props.match.params.project} />
+          <DashboardPage project={props.match.params.project} history={props.history}/>
         )} />
         <Route path="/:project/controlPanel" render={(props) => (
-          <ControlPanelPage project={props.match.params.project} />
+          <ControlPanelPage project={props.match.params.project} history={props.history}/>
         )} />
 
       </Switch>

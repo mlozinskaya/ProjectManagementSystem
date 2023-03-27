@@ -58,22 +58,22 @@ class WorkspaceSideBar extends Component {
 
                 <Link to={confluenceUrl} className="nav-link link-container">
                     <FontAwesomeIcon icon={faStarHalfStroke} className="link-icon" />
-                    <span>Confluence</span>
+                    <span>Информация</span>
                 </Link>
 
                 <Link to={backlogUrl} className="nav-link link-container">
                     <FontAwesomeIcon icon={faTableList} className="link-icon" />
-                    <span>Backlog</span>
+                    <span>Очередь задач</span>
                 </Link>
 
                 <Link to={dashboardUrl} className="nav-link link-container">
                     <FontAwesomeIcon icon={faScroll} className="link-icon" />
-                    <span>Dashboard</span>
+                    <span>Панель задач</span>
                 </Link>
 
                 <Link to={controlPanelUrl} className="nav-link link-container">
                     <FontAwesomeIcon icon={faStarHalfStroke} className="link-icon" />
-                    <span>Control panel</span>
+                    <span>Статистика</span>
                 </Link>
             </div>
 

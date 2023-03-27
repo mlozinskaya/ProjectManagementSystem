@@ -64,6 +64,7 @@ public class WebSecurityConfig {
                         .requestMatchers("/api/auth/**").permitAll()
                         .requestMatchers("/api/test/**").permitAll()
                         .requestMatchers("/project/**").permitAll()
+                        .requestMatchers("/backlog/**").permitAll()
                         .anyRequest().denyAll()
                 )
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);

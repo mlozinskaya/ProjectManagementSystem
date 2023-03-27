@@ -13,10 +13,23 @@
 
 .project-row {
     padding: 10px 10px;
+    display: flex;
+    justify-content: space-between;
 }
 
 .project-row:hover {
     background-color: #e9ecef;
+}
+
+.manage-btns-container {
+    display: none;
+}
+
+.project-row:hover .manage-btns-container {
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+    color: gray;
 }
 
 .row-selected {
@@ -44,12 +57,4 @@
 .create-project-save-btn {
     width: 120px;
     height: 40px;
-}
-
-.projects-manage-btn:disabled {
-
-}
-
-.projects-manage-btn[disabled]:hover {
-    background: red;
 }

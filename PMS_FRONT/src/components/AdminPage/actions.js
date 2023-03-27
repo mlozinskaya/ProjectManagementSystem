@@ -14,43 +14,36 @@ export const getProjects = () => async dispatch => {
     })
 }
 
-export const setProjectForEdit = (project) => (dispatch) => {
+export const setOpenedProject = (project) => (dispatch) => {
     return dispatch({
-        type: act.SET_NEW_PROJECT,
+        type: act.SET_OPENED_PROJECT,
         payload: project
     })
 }
 
-export const clearEditProjectForm = () => (dispatch) => {
+export const clearOpenedProject = () => (dispatch) => {
     return dispatch({
-        type: act.CLEAR_NEW_PROJECT
+        type: act.CLEAR_OPENED_PROJECT
     })
 }
 
 export const setProjectName = (name) => (dispatch) => {
     return dispatch({
-        type: act.SET_NEW_PROJECT_NAME,
+        type: act.SET_OPENED_PROJECT_NAME,
         payload: name
     })
 }
 
 export const setProjectKey = (key) => (dispatch) => {
     return dispatch({
-        type: act.SET_NEW_PROJECT_KEY,
+        type: act.SET_OPENED_PROJECT_KEY,
         payload: key
     })
 }
 export const setProjectLead = (lead) => (dispatch) => {
     return dispatch({
-        type: act.SET_NEW_PROJECT_LEAD,
+        type: act.SET_OPENED_PROJECT_LEAD,
         payload: lead
-    })
-}
-
-export const setSelectedProject = (project) => (dispatch) => {
-    return dispatch({
-        type: act.SET_SELECTED_PROJECT,
-        payload: project
     })
 }
 
@@ -59,10 +52,7 @@ export const saveProject = (project) => async dispatch => {
         .post(API_URL + "/save", project, { headers: authHeader() })
         .then((response) => {
             if (response.status === 200) {
-                dispatch({
-                    type: act.CLEAN_NEW_PROJECT_FORM
-                });
-                dispatch(clearSelectedProject())
+                dispatch(clearOpenedProject());
                 history.push("/admin/projects");
             }
         });
@@ -76,17 +66,4 @@ export const removeProject = (project) => async dispatch => {
                 dispatch(getProjects());
             }
         });
-}
-
-export const setSubmitFormMode = (mode) => (dispatch) => {
-    return dispatch({
-        type: act.SET_SUBMIT_FORM_MODE,
-        payload: mode
-    })
-}
-
-export const clearSelectedProject = () => (dispatch) => {
-    return dispatch({
-        type: act.CLEAR_SELECTED_PROJECT
-    })
 }
