@@ -9,29 +9,36 @@ import Input from "react-validation/build/input";
 
 class BacklogTaskForm extends Component {
 
-    handleSaveTask(e){
+    getPageTitle() {
+        const { mode } = this.props;
+
+        if (mode === "add") {
+            return "Добавить задачу"
+        } else if (mode === "read") {
+            return "Просмотреть задачу"
+        } else if (mode === "edit") {
+            return "Изменить задачу"
+        }
+    }
+
+    isDisabled() {
+        return this.props.mode === "read";
+    }
+
+    handleSaveTask(e) {
         e.preventDefault();
 
         const { openedTask } = this.props.backlog;
-        openedTask.project = this.props.project;
-        this.props.actions.saveTask(openedTask);
+        const taskForSave = {
+            ...openedTask,
+            projectId: this.props.workspace.selectedProject.id
+        };
+        this.props.actions.saveTask(taskForSave);
     }
 
-    handleCancel(e){
+    handleCancel(e) {
         e.preventDefault();
-
-        this.props.history.replace("/" + this.props.project + "/backlog")
-    }
-
-    getPageTitle(){
-        const { mode } = this.props;
-        const title = (mode === "add" ? "Добавить" : mode === "read" ? "Просмотреть" : "Изменить") + " задачу";
-        return title;
-    }
-
-    isDisabled(){
-        const { mode } = this.props;
-        return mode === "read";
+        this.props.history.replace("/backlog")
     }
 
     renderContent() {
@@ -72,11 +79,10 @@ class BacklogTaskForm extends Component {
 }
 
 function mapStateToProps(state) {
-    const { auth, backlog } = state;
+    const { auth, workspace, backlog } = state;
 
     return {
-        auth,
-        backlog
+        auth, workspace, backlog
     };
 }
 

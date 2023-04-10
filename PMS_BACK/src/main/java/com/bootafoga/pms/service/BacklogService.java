@@ -1,9 +1,13 @@
 package com.bootafoga.pms.service;
 
 import com.bootafoga.pms.model.BacklogTask;
+import com.bootafoga.pms.model.Project;
 import com.bootafoga.pms.repository.BacklogRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -14,11 +18,15 @@ public class BacklogService {
         this.backlogRepository = projectRepository;
     }
 
-    public Iterable<BacklogTask> findAll(){
+    public List<BacklogTask> findAll(){
         return backlogRepository.findAll();
     }
 
-    public Optional<BacklogTask> findById(Long id){
+    public List<BacklogTask> findByProject(Project project) {
+        return backlogRepository.findByProject(project);
+    }
+
+    public Optional<BacklogTask> findById(String id){
         return backlogRepository.findById(id);
     }
 
@@ -29,4 +37,6 @@ public class BacklogService {
     public BacklogTask save(BacklogTask task){
         return backlogRepository.save(task);
     }
+
+
 }

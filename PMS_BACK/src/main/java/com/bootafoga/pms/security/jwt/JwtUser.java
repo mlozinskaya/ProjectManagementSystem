@@ -6,14 +6,14 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.util.Collection;
 
 public class JwtUser implements UserDetails {
-    private final Long id;
+    private final String id;
     private final String username;
     private final String name;
     private final String email;
     private final String password;
     private final Collection<? extends GrantedAuthority> authorities;
 
-    public JwtUser(Long id, String username, String name, String email, String password,
+    public JwtUser(String id, String username, String name, String email, String password,
                    Collection<? extends GrantedAuthority> authorities) {
         this.id = id;
         this.username = username;
@@ -25,7 +25,7 @@ public class JwtUser implements UserDetails {
 
 
 
-    public Long getId() {
+    public String getId() {
         return id;
     }
 

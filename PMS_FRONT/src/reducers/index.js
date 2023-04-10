@@ -5,7 +5,7 @@ import message from "./message";
 import adminPage from "../components/AdminPage/reducer"
 import workspace from "../components/WorkSpacePage/reducer";
 import backlog from "../components/WorkSpacePage/BacklogPage/reducer"
-
+import confluence from "../components/WorkSpacePage/ConfluencePage/reducer"
 
 
 export default combineReducers({
@@ -13,5 +13,6 @@ export default combineReducers({
   message,
   adminPage,
   workspace,
-  backlog
+  backlog,
+  confluence
 });

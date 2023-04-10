@@ -23,7 +23,7 @@ class ProjectsPage extends Component {
 
         if (workspaceSelectedProject === item.name) {
             this.props.workspaceActions.clearSelectedProject();
-            localStorage.removeItem("lastSelectedProject");
+            localStorage.removeItem("lastSelectedProjectId");
         }
     }
 

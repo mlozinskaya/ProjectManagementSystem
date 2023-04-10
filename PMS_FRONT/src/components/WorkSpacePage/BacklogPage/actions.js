@@ -5,8 +5,8 @@ import { history } from '../../../helpers/history';
 
 const API_URL = "http://localhost:8080/backlog";
 
-export const getBacklogTasks = () => async dispatch => {
-    let res = await axios.get(API_URL + "/list", { headers: authHeader() });
+export const getBacklogTasks = (projectId) => async dispatch => {
+    let res = await axios.get(`${API_URL}/list/${projectId}`, { headers: authHeader() });
 
     dispatch({
         type: act.GET_BACKLOG_TASKS,
@@ -33,7 +33,7 @@ export const saveTask = (task) => async dispatch => {
         .then((response) => {
             if (response.status === 200) {
                 dispatch(clearOpenedTask());
-                history.push("/" + task.project + "/backlog");
+                history.push("/backlog");
             }
         });
 }

@@ -10,52 +10,88 @@ import { faPlusCircle, faPen, faTrash, faEye } from '@fortawesome/free-solid-svg
 
 class BacklogPage extends Component {
     componentDidMount() {
-        this.props.actions.getBacklogTasks();
+        const selectedProject = this.getSelectedProject();
+
+        if (selectedProject) {
+            this.props.actions.getBacklogTasks(selectedProject.id);
+        }
     }
 
     getSelectedProject() {
-        return this.props.project;
+        return this.props.workspace.selectedProject
     }
 
-    handleOpenTaskForm(url){
+    handleOpenTaskForm(mode, item) {
+        const url = "/backlog/" + mode;
+
+        if (mode === "read" || mode === "edit") {
+            // this.props.actions.setOpenedProject(item);
+        }
+
         this.props.history.replace(url);
     }
 
-    handleOnClickTrash(){
-
+    handleOnClickTrash(item) {
+        if (item && item.id) {
+            if (window.confirm("Вы действительно хотите удалить задачу \"" + item.name + "\"?")) {
+                //this.props.actions.removeProject(item);
+            }
+        }
     }
 
-    renderManageButtons() {
+    renderManageButtons(item) {
         const buttons = [];
 
-        const baseUrl = "/" + this.getSelectedProject() + "/backlog";
-
         buttons.push(
-            <span onClick={this.handleOpenTaskForm.bind(this, baseUrl + "/edit")}>
-                <FontAwesomeIcon icon={faPen} className="action-icon-btn" disabled />
+            <span onClick={this.handleOpenTaskForm.bind(this, "edit", item)}>
+                <FontAwesomeIcon icon={faPen} />
             </span>
         )
-        buttons.push(<span onClick={this.handleOpenTaskForm.bind(this, baseUrl + "/read")}>
-            <FontAwesomeIcon icon={faEye} className="action-icon-btn" />
-        </span>)
 
-        buttons.push(<span onClick={this.handleOnClickTrash.bind(this)}>
-            <FontAwesomeIcon icon={faTrash} className="action-icon-btn" />
-        </span>)
-
-        buttons.push(<button type="button" class="btn btn-primary" 
-                onClick={this.handleOpenTaskForm.bind(this, baseUrl + "/add")}>
-            <span>
-                <FontAwesomeIcon icon={faPlusCircle} className="link-icon" />
-                <span>Добавить задачу</span>
+        buttons.push(
+            <span onClick={this.handleOpenTaskForm.bind(this, "read", item)}>
+                <FontAwesomeIcon icon={faEye} />
             </span>
-        </button>)
+        )
+
+        buttons.push(
+            <span onClick={this.handleOnClickTrash.bind(this, item)}>
+                <FontAwesomeIcon icon={faTrash} />
+            </span>
+        )
 
         return buttons;
     }
 
-    renderTasks(){
+    renderAddButton() {
+        return <button type="button" class="btn btn-primary"
+            onClick={this.handleOpenTaskForm.bind(this, "add")}>
+            <span>
+                <FontAwesomeIcon icon={faPlusCircle} className="link-icon" />
+                <span>Добавить задачу</span>
+            </span>
+        </button>;
+    }
+
+    renderTasks() {
         const { tasks } = this.props.backlog;
+
+        let rows = [];
+        tasks.forEach(item => {
+            rows.push(
+                <div className="backlog-task-row">
+                    <div>{item.name}</div>
+
+                    <span className="backlog-task-manage-btns-container">
+                        {this.renderManageButtons(item)}
+                    </span>
+                </div>
+            )
+
+            rows.push(<hr className="separate-line" />)
+        })
+
+        return rows;
     }
 
     renderContent() {
@@ -63,7 +99,7 @@ class BacklogPage extends Component {
             <div className="backlog-page-title-container">
                 <div className="backlog-page-label"> Задачи </div>
                 <div>
-                    {this.renderManageButtons()}
+                    {this.renderAddButton()}
                 </div>
 
             </div>
@@ -85,11 +121,10 @@ class BacklogPage extends Component {
 }
 
 function mapStateToProps(state) {
-    const { auth, backlog } = state;
+    const { auth, workspace, backlog } = state;
 
     return {
-        auth,
-        backlog
+        auth, workspace, backlog
     };
 }
 

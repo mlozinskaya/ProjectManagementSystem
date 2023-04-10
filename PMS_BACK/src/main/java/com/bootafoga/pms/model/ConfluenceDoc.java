@@ -1,14 +1,13 @@
 package com.bootafoga.pms.model;
 
-
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import org.hibernate.annotations.GenericGenerator;
 
 @Entity
-@Table(name = "projects")
-public class Project {
+@Table(name = "confluence_doc")
+public class ConfluenceDoc {
     @Id
     @GeneratedValue(generator = "uuid")
     @GenericGenerator(name = "uuid", strategy = "uuid2")
@@ -19,7 +18,8 @@ public class Project {
     @Size(max = 20)
     private String name;
 
-    private String projKey;
+    public ConfluenceDoc(){
+    }
 
     public String getId() {
         return id;
@@ -35,13 +35,5 @@ public class Project {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public String getKey() {
-        return projKey;
-    }
-
-    public void setKey(String projKey) {
-        this.projKey = projKey;
     }
 }

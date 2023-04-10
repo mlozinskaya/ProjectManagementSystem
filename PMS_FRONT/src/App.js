@@ -35,7 +35,7 @@ import EventBus from "./common/EventBus";
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faSignOut } from '@fortawesome/free-solid-svg-icons'
-import UsersPage from "./components/AdminPage/UsersPage";
+import UsersPage from "./components/AdminPage/Users/UsersPage";
 import RightsPage from "./components/AdminPage/RightsPage";
 import ProjectForm from "./components/AdminPage/Projects/ProjectForm";
 import ConfluencePage from "./components/WorkSpacePage/ConfluencePage/ConfluencePage";
@@ -88,13 +88,10 @@ class App extends Component {
   }
 
   renderHomeBtn() {
-    const { workspace } = this.props;
-    const homeLink = workspace.selectedProject ? "/" + workspace.selectedProject + "/backlog" : "/"
-
     return (
       <div className="navbar-nav">
         <li className="nav-item">
-          <Link to={homeLink} className="nav-link">
+          <Link to={"/backlog"} className="nav-link">
             Рабочая область
           </Link>
         </li>
@@ -202,32 +199,31 @@ class App extends Component {
         <Route exact path="/profile" component={Profile} />
 
         <Route path="/admin/projects/:mode" render={(props) => (
-          <ProjectForm history={props.history} mode={props.match.params.mode}/>
+          <ProjectForm history={props.history} mode={props.match.params.mode} />
         )} />
 
         <Route exact path="/admin/projects" component={ProjectsPage} />
         <Route exact path="/admin/users" component={UsersPage} />
         <Route exact path="/admin/rights" component={RightsPage} />
 
-        <Route path="/:project/confluence" render={(props) => (
-          <ConfluencePage project={props.match.params.project} history={props.history}/>
-        )} />
-        
-        
-        <Route path="/:project/backlog/:mode" render={(props) => (
-          <BacklogTaskForm project={props.match.params.project} history={props.history} mode={props.match.params.mode}/>
+        <Route path="/backlog/:mode" render={(props) => (
+          <BacklogTaskForm history={props.history} mode={props.match.params.mode}/>
         )} />
 
-        <Route path="/:project/backlog" render={(props) => (
-          <BacklogPage project={props.match.params.project} history={props.history}/>
+        <Route path="/backlog" render={(props) => (
+          <BacklogPage history={props.history} />
         )} />
 
-
-        <Route path="/:project/dashboard" render={(props) => (
-          <DashboardPage project={props.match.params.project} history={props.history}/>
+        <Route path="/confluence" render={(props) => (
+          <ConfluencePage history={props.history} />
         )} />
-        <Route path="/:project/controlPanel" render={(props) => (
-          <ControlPanelPage project={props.match.params.project} history={props.history}/>
+
+        <Route path="/dashboard" render={(props) => (
+          <DashboardPage history={props.history} />
+        )} />
+
+        <Route path="/controlPanel" render={(props) => (
+          <ControlPanelPage history={props.history} />
         )} />
 
       </Switch>

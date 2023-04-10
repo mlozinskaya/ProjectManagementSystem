@@ -24,13 +24,11 @@ public class TestController {
 		this.jwtTokenProvider = jwtTokenProvider;
 	}
 
-	@CrossOrigin
 	@GetMapping("/all")
 	public String allAccess() {
 		return "Public Content.";
 	}
 
-	@CrossOrigin
 	@GetMapping("/user")
 	public String userAccess() {
 		return "User Content.";

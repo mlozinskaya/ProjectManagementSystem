@@ -3,7 +3,7 @@ import * as act from "./constants";
 import authHeader from "../../services/auth-header";
 
 export const getProjects = () => async dispatch => {
-    let res = await axios.get("http://localhost:8080/project/list", { headers: authHeader() });
+    let res = await axios.get("http://localhost:8080/projects/list", { headers: authHeader() });
   
     dispatch({
         type: act.GET_PROJECTS_FOR_WORKSPACE,
@@ -19,7 +19,7 @@ export const getProjects = () => async dispatch => {
     })
   }
 
-  export const clearSelectedProject = (project) => (dispatch) => {
+  export const clearSelectedProject = () => (dispatch) => {
     return dispatch({
       type: act.CLEAR_SELECTED_WORKSPACE_PROJECT
     })

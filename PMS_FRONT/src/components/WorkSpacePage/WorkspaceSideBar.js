@@ -19,35 +19,34 @@ class WorkspaceSideBar extends Component {
 
     componentDidUpdate() {
         const { workspace } = this.props;
-        const lastSelectedProject = localStorage.getItem("lastSelectedProject");
+        const lastSelectedProjectId = localStorage.getItem("lastSelectedProjectId");
 
         const isCurrentSelectedProjectEmpty = workspace.selectedProject === null;
-        const isProjectExists = workspace.projects.find(item => item.name === lastSelectedProject);
+        const lastSelectedProject = lastSelectedProjectId ?
+            workspace.projects.find(item => item.id === lastSelectedProjectId) : null;
 
-        if (isCurrentSelectedProjectEmpty && lastSelectedProject && isProjectExists) {
+        if (isCurrentSelectedProjectEmpty && lastSelectedProject) {
             this.props.actions.setSelectedProject(lastSelectedProject);
-        } 
+        }
     }
 
     handleSelectProject(project) {
         this.props.actions.setSelectedProject(project);
-        history.replace("/" + project + "/backlog");
-        localStorage.setItem("lastSelectedProject", project);
+        localStorage.setItem("lastSelectedProjectId", project.id);
+        history.replace("/backlog");
     }
 
     render() {
         const { workspace } = this.props;
-        const selectedProject = workspace.selectedProject || "Выберите проект";
-        const projectNames = workspace.projects.map(item => item.name);
 
-        const confluenceUrl = workspace.selectedProject ? "/" + workspace.selectedProject + "/confluence" : "/"
-        const backlogUrl = workspace.selectedProject ? "/" + workspace.selectedProject + "/backlog" : "/"
-        const dashboardUrl = workspace.selectedProject ? "/" + workspace.selectedProject + "/dashboard" : "/"
-        const controlPanelUrl = workspace.selectedProject ? "/" + workspace.selectedProject + "/controlPanel" : "/"
+        const confluenceUrl = "/confluence";
+        const backlogUrl = "/backlog";
+        const dashboardUrl = "/dashboard";
+        const controlPanelUrl = "/controlPanel";
 
         return <div className="side-bar-container">
             <div className="sidebar-dropdown">
-                <DropdownWithSearch values={projectNames} selected={selectedProject}
+                <DropdownWithSearch values={workspace.projects} selected={workspace.selectedProject}
                     onClick={this.handleSelectProject.bind(this)}
                 />
             </div>
@@ -58,7 +57,7 @@ class WorkspaceSideBar extends Component {
 
                 <Link to={confluenceUrl} className="nav-link link-container">
                     <FontAwesomeIcon icon={faStarHalfStroke} className="link-icon" />
-                    <span>Информация</span>
+                    <span>Справочник</span>
                 </Link>
 
                 <Link to={backlogUrl} className="nav-link link-container">
@@ -69,6 +68,16 @@ class WorkspaceSideBar extends Component {
                 <Link to={dashboardUrl} className="nav-link link-container">
                     <FontAwesomeIcon icon={faScroll} className="link-icon" />
                     <span>Панель задач</span>
+                </Link>
+
+                <Link to={controlPanelUrl} className="nav-link link-container">
+                    <FontAwesomeIcon icon={faStarHalfStroke} className="link-icon" />
+                    <span>Тестирование</span>
+                </Link>
+
+                <Link to={controlPanelUrl} className="nav-link link-container">
+                    <FontAwesomeIcon icon={faStarHalfStroke} className="link-icon" />
+                    <span>Релизы</span>
                 </Link>
 
                 <Link to={controlPanelUrl} className="nav-link link-container">

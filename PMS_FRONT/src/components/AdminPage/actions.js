@@ -3,13 +3,14 @@ import * as act from "./constants";
 import authHeader from "../../services/auth-header";
 import { history } from '../../helpers/history';
 
-const API_URL = "http://localhost:8080/project";
+const PROJECT_API_URL = "http://localhost:8080/projects";
+const USERS_API_URL = "http://localhost:8080/users";
 
 export const getProjects = () => async dispatch => {
-    let res = await axios.get(API_URL + "/list", { headers: authHeader() });
+    let res = await axios.get(PROJECT_API_URL + "/list", { headers: authHeader() });
 
     dispatch({
-        type: act.GET_PROJECTS,
+        type: act.GET_PROJECTS_FOR_ADMIN,
         payload: res.data
     })
 }
@@ -49,7 +50,7 @@ export const setProjectLead = (lead) => (dispatch) => {
 
 export const saveProject = (project) => async dispatch => {
     return axios
-        .post(API_URL + "/save", project, { headers: authHeader() })
+        .post(PROJECT_API_URL + "/save", project, { headers: authHeader() })
         .then((response) => {
             if (response.status === 200) {
                 dispatch(clearOpenedProject());
@@ -60,10 +61,19 @@ export const saveProject = (project) => async dispatch => {
 
 export const removeProject = (project) => async dispatch => {
     return axios
-        .post(API_URL + "/remove", project, { headers: authHeader() })
+        .post(PROJECT_API_URL + "/remove", project, { headers: authHeader() })
         .then((response) => {
             if (response.status === 200) {
                 dispatch(getProjects());
             }
         });
+}
+
+export const getUsers = () => async dispatch => {
+    let res = await axios.get(USERS_API_URL + "/list", { headers: authHeader() });
+
+    dispatch({
+        type: act.GET_USERS_FOR_ADMIN,
+        payload: res.data
+    })
 }

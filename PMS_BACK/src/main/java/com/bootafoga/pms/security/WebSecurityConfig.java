@@ -63,8 +63,9 @@ public class WebSecurityConfig {
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers("/api/auth/**").permitAll()
                         .requestMatchers("/api/test/**").permitAll()
-                        .requestMatchers("/project/**").permitAll()
+                        .requestMatchers("/projects/**").permitAll()
                         .requestMatchers("/backlog/**").permitAll()
+                        .requestMatchers("/confluence/**").permitAll()
                         .anyRequest().denyAll()
                 )
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);

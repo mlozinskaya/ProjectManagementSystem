@@ -1,6 +1,4 @@
 import React, { Component, useState } from "react";
-import { connect } from "react-redux";
-
 import Dropdown from 'react-bootstrap/Dropdown';
 import Form from 'react-bootstrap/Form';
 
@@ -16,9 +14,10 @@ class DropdownWithSearch extends Component {
         const items = [];
 
         props.values.forEach(item => {
-            items.push(<Dropdown.Item eventKey="2" active={props.selected === item}
+            items.push(<Dropdown.Item eventKey={item.name}
+                active={props.selected && props.selected.id === item.id}
                 onClick={props.onClick.bind(this, item)}>
-                {item}
+                {item.name}
             </Dropdown.Item>)
         })
 
@@ -31,7 +30,7 @@ class DropdownWithSearch extends Component {
         return <Dropdown>
             <Dropdown.Toggle as={CustomToggle} id="dropdown-custom-components">
                 <span style={{ paddingRight: "10px" }}>
-                    {props.selected}
+                    {props.selected ? props.selected.name : "Выберите проект"}
                 </span>
             </Dropdown.Toggle>
 

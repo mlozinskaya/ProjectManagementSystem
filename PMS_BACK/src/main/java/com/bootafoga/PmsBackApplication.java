@@ -9,5 +9,4 @@ public class PmsBackApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(PmsBackApplication.class, args);
 	}
-
 }

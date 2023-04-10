@@ -4,14 +4,16 @@ const initialState = {
     projects: [],
     openedProject: {
         name: null
-    }
+    },
+    users: [],
+    openedUser: {}
 };
 
 export default function adminPage(state = initialState, action) {
     const { type, payload } = action;
 
     switch (type) {
-        case act.GET_PROJECTS:
+        case act.GET_PROJECTS_FOR_ADMIN:
             return {
                 ...state,
                 projects: payload
@@ -29,7 +31,6 @@ export default function adminPage(state = initialState, action) {
                 openedProject: {}
             };
         }
-
         case act.SET_OPENED_PROJECT_NAME:
             return {
                 ...state,
@@ -38,7 +39,6 @@ export default function adminPage(state = initialState, action) {
                     name: payload
                 }
             };
-
         case act.SET_OPENED_PROJECT_KEY:
             return {
                 ...state,
@@ -47,7 +47,6 @@ export default function adminPage(state = initialState, action) {
                     key: payload
                 }
             };
-
         case act.SET_OPENED_PROJECT_LEAD:
             return {
                 ...state,
@@ -55,6 +54,12 @@ export default function adminPage(state = initialState, action) {
                     ...state.openedProject,
                     lead: payload
                 }
+            };
+
+        case act.GET_USERS_FOR_ADMIN:
+            return {
+                ...state,
+                users: payload
             };
         default:
             return state;

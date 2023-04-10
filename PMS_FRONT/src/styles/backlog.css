@@ -23,3 +23,24 @@
     padding: 20px;
     border-radius: 3px;
 }
+
+.backlog-task-row {
+    padding: 10px 10px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.backlog-task-row:hover {
+    background-color: #e9ecef;
+}
+
+.backlog-task-manage-btns-container {
+    display: none;
+}
+
+.backlog-task-row:hover .backlog-task-manage-btns-container {
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+    color: gray;
+}

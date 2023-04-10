@@ -1,11 +1,10 @@
 package com.bootafoga.pms.payload.dto;
 
-public class ProjectDTO {
+public class UserDTO {
     private String id;
     private String name;
-    private String key;
 
-    public ProjectDTO() {
+    public UserDTO(){
 
     }
 
@@ -23,13 +22,5 @@ public class ProjectDTO {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public String getKey() {
-        return key;
-    }
-
-    public void setKey(String key) {
-        this.key = key;
     }
 }
