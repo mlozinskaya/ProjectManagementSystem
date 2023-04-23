@@ -33,11 +33,13 @@ class BacklogTaskForm extends Component {
             ...openedTask,
             projectId: this.props.workspace.selectedProject.id
         };
+
         this.props.actions.saveTask(taskForSave);
     }
 
     handleCancel(e) {
         e.preventDefault();
+        this.props.actions.clearOpenedTask();
         this.props.history.replace("/backlog")
     }
 
@@ -50,13 +52,53 @@ class BacklogTaskForm extends Component {
             <h4> {title} </h4>
             <hr className="title-separate-line" />
             <Form onSubmit={this.handleSaveTask.bind(this)}>
-                <div className="form-group create-project-input-row">
+                <div className="create-project-input-row">
                     <label htmlFor="task-name" className="create-project-input-label">Название задачи</label>
                     <Input
                         disabled={disabled}
                         type="text" className="form-control"
                         name="task-name" value={task.name}
                         onChange={(v) => this.props.actions.setOpenedTaskName(v.target.value)}
+                    />
+                </div>
+                
+                <div className="create-project-input-row">
+                    <label htmlFor="task-type" className="create-project-input-label">Тип задачи</label>
+                    <Input
+                        disabled={disabled}
+                        type="text" className="form-control"
+                        name="task-type" value={task.type}
+                        onChange={(v) => this.props.actions.setOpenedTaskType(v.target.value)}
+                    />
+                </div>
+
+                <div className="create-project-input-row">
+                    <label htmlFor="task-status" className="create-project-input-label">Статус задачи</label>
+                    <Input
+                        disabled={disabled}
+                        type="text" className="form-control"
+                        name="task-status" value={task.status}
+                        onChange={(v) => this.props.actions.setOpenedTaskStatus(v.target.value)}
+                    />
+                </div>
+
+                <div className="create-project-input-row">
+                    <label htmlFor="task-summary" className="create-project-input-label">Краткое описание</label>
+                    <Input
+                        disabled={disabled}
+                        type="text" className="form-control"
+                        name="task-summary" value={task.summary}
+                        onChange={(v) => this.props.actions.setOpenedTaskSummary(v.target.value)}
+                    />
+                </div>
+
+                <div className="create-project-input-row">
+                    <label htmlFor="task-description" className="create-project-input-label">Полное описание</label>
+                    <Input
+                        disabled={disabled}
+                        type="text" className="form-control"
+                        name="task-description" value={task.description}
+                        onChange={(v) => this.props.actions.setOpenedTaskDescription(v.target.value)}
                     />
                 </div>
 

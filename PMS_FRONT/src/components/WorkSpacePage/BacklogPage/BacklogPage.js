@@ -2,7 +2,9 @@ import React, { Component } from "react";
 import { bindActionCreators } from 'redux'
 import { connect } from "react-redux";
 
-import * as actions from "./actions"
+import { faSearch, faClose } from '@fortawesome/free-solid-svg-icons'
+import * as actions from "./actions";
+import * as cnst from "./constants";
 import WorkspaceSideBar from "../WorkspaceSideBar";
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -18,14 +20,14 @@ class BacklogPage extends Component {
     }
 
     getSelectedProject() {
-        return this.props.workspace.selectedProject
+        return this.props.workspace.selectedProject;
     }
 
     handleOpenTaskForm(mode, item) {
         const url = "/backlog/" + mode;
 
         if (mode === "read" || mode === "edit") {
-            // this.props.actions.setOpenedProject(item);
+            this.props.actions.setOpenedTask(item);
         }
 
         this.props.history.replace(url);
@@ -63,6 +65,26 @@ class BacklogPage extends Component {
         return buttons;
     }
 
+    handleOnTabClick(itemId) {
+        this.props.actions.setViewType(itemId);
+    }
+
+    renderViewTabs() {
+        const viewType = this.props.backlog.viewType;
+        const viewTabs = [];
+
+        cnst.viewTypes.forEach(tab => {
+            viewTabs.push(
+                <div className={viewType === tab.id ? "selected" : ""}
+                    onClick={() => this.handleOnTabClick(tab.id)}>
+                    {tab.name}
+                </div>
+            );
+        })
+
+        return viewTabs;
+    }
+
     renderAddButton() {
         return <button type="button" class="btn btn-primary"
             onClick={this.handleOpenTaskForm.bind(this, "add")}>
@@ -73,42 +95,87 @@ class BacklogPage extends Component {
         </button>;
     }
 
+
+    getRowLabelStyle(item) {
+        switch (item.type) {
+            case "STORY":
+                return { color: "blue" }
+            case "BUG":
+                return { color: "red" }
+            case "RESEARCH":
+                return { color: "green" }
+        }
+    }
+
     renderTasks() {
-        const { tasks } = this.props.backlog;
+        const { backlog } = this.props;
+        const viewType = this.props.backlog.viewType;
 
         let rows = [];
-        tasks.forEach(item => {
-            rows.push(
-                <div className="backlog-task-row">
-                    <div>{item.name}</div>
+        backlog.tasks.forEach(item => {
+            if ((!backlog.filter || item.name.startsWith(backlog.filter)) 
+            && (backlog.viewType === "ALL" || item.type === backlog.viewType)) {
+                rows.push(
+                    <div className="backlog-task-row">
+                        <div className="backlog-task-row-title">
+                            <div className="backlog-task-row-label" style={this.getRowLabelStyle(item)}>
+                                {item.type}
+                            </div>
+                            <div>{item.name}</div>
+                        </div>
 
-                    <span className="backlog-task-manage-btns-container">
-                        {this.renderManageButtons(item)}
-                    </span>
-                </div>
-            )
-
-            rows.push(<hr className="separate-line" />)
+                        <span className="backlog-task-manage-btns-container">
+                            {this.renderManageButtons(item)}
+                        </span>
+                    </div>
+                )
+            }
         })
 
         return rows;
     }
 
+    handleSearchChanged = (e) => {
+        this.props.actions.setFilter(e.target.value);
+    }
+
+    handleSearchEntered = (event) => {
+        if (event.key === 'Enter') {
+            console.log("test")
+        }
+    };
+
     renderContent() {
+        const { backlog } = this.props;
+
         return <div className="backlog-page-container">
+
+            <div className="backlog-search-row">
+                <FontAwesomeIcon icon={faSearch} className="link-icon backlog-search-icon" />
+                <input type="text" name="name"
+                    value={backlog.filter || ""}
+                    className="backlog-search-input-field"
+                    placeholder="Найти задачу"
+                    onChange={this.handleSearchChanged}
+                    onKeyDown={this.handleSearchEntered} />
+                <FontAwesomeIcon icon={faClose} className="link-icon backlog-search-icon"
+                    onClick={this.props.actions.clearFilter} />
+            </div>
+
             <div className="backlog-page-title-container">
-                <div className="backlog-page-label"> Задачи </div>
+                <div className="backlog-view-tabs">
+                    {this.renderViewTabs()}
+                </div>
                 <div>
                     {this.renderAddButton()}
                 </div>
-
             </div>
 
-            <div style={{ marginTop: "20px" }}></div>
-            <hr className="title-separate-line" />
-            <br />
-            <hr className="separate-line" />
-            {this.renderTasks()}
+            <div className="backlog-tasks-container">
+                <div className="backlog-task-main-row">Название</div>
+                {this.renderTasks()}
+            </div>
+
         </div>
     }
 

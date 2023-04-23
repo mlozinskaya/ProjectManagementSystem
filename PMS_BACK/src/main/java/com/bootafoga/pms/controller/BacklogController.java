@@ -56,7 +56,11 @@ public class BacklogController {
         BacklogTask entity = new BacklogTask();
         entity.setId(dto.getId());
         entity.setProject(project);
+        entity.setType(dto.getType());
+        entity.setStatus(dto.getStatus());
         entity.setName(dto.getName());
+        entity.setSummary(dto.getSummary());
+        entity.setDescription(dto.getDescription());
         return entity;
     }
 }
