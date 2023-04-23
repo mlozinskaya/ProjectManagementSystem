@@ -65,6 +65,7 @@ public class WebSecurityConfig {
                         .requestMatchers("/api/test/**").permitAll()
                         .requestMatchers("/projects/**").permitAll()
                         .requestMatchers("/backlog/**").permitAll()
+                        .requestMatchers("/dashboard/**").permitAll()
                         .requestMatchers("/confluence/**").permitAll()
                         .anyRequest().denyAll()
                 )

@@ -12,6 +12,7 @@ import "./styles/header.css"
 import "./styles/sidebar.css"
 import "./styles/userProfile.css"
 import "./styles/backlog.css"
+import "./styles/dashboard.css"
 
 import Login from "./components/Auth/LoginForm";
 import Register from "./components/Auth/RegisterForm";

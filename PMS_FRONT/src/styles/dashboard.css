@@ -1,0 +1,78 @@
+.dasboard-container {
+    width: 100%;
+    padding: 20px;
+}
+
+.dashboard-columns-titles {
+    display: flex;
+    justify-content: space-between;
+}
+
+.dashboard-columns-titles > div {
+    width: 23%;
+    font-weight: bold;
+    border-bottom: 2px solid #000000;
+    padding-bottom: 5px;
+    margin-bottom: 25px;
+}
+
+.dashboard-cards-container {
+    display: flex;
+    justify-content: space-between;
+}
+
+.dashboard-cards-container > div{
+    width: 23%;
+}
+
+.dashboard-card {
+    background-color: #FFFFFF;
+    border-radius: 15px;
+    padding-bottom: 10px;
+    margin-bottom: 15px;
+}
+
+.dashboard-card-title-type-row {
+    padding-top: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.dashboard-card-title {
+    font-weight: bold;
+    padding-left: 10px;
+}
+
+.dashboard-card-type {
+    margin-right: 15px;
+    padding: 0px 5px;
+    text-align: center;
+    font-size: 12px;
+    font-weight: bold;
+    border: 1px solid;
+}
+
+.dashboard-card-description {
+    padding-left: 10px;
+    padding-right: 5px;
+    padding-bottom: 10px;
+    color: #9f9f9f;
+}
+
+.dashboard-card-footer-line {
+    border-top: 1px solid #9f9f9f;
+}
+
+.dashboard-card-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 10px;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+.dashboard-card-user-icon {
+    height: 30px;
+}

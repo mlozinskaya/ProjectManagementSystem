@@ -10,28 +10,70 @@
     justify-content: space-between;
 }
 
-.backlog-page-label {
-    font-size: 25px;
-    font-weight: 500;
+.backlog-view-tabs {
+    display: flex;
+    align-self: center;
+    justify-content: space-between;
+    height: 20px;
+    gap: 10px;
+}
+
+.backlog-view-tabs > div {
+    padding: 0px 10px;
+    font-size: 12px;
+    font-weight: bold;
+    border-radius: 30px;
+    cursor: pointer;
+}
+
+.backlog-view-tabs .selected {
+
+    background-color: rgba(243, 114, 82, 0.806);
 }
 
 .backlog-task-container {
-    background-color: #e9ecef;
+    background-color: #ffffff;
     width: 500px;
-    height: 340px;
+    height: 390px;
     margin: 20px;
     padding: 20px;
     border-radius: 3px;
+}
+
+.backlog-task-main-row {
+    margin-top: 20px;
+    padding: 10px 10px;
+    display: flex;
+    justify-content: space-between;
+    font-weight: bold;
+    border: 1px solid rgb(206, 206, 206);
 }
 
 .backlog-task-row {
     padding: 10px 10px;
     display: flex;
     justify-content: space-between;
+    border-color: rgb(206, 206, 206); 
+    border-style: solid; 
+    border-width: 0px 1px 1px 1px;
 }
 
 .backlog-task-row:hover {
     background-color: #e9ecef;
+}
+
+.backlog-task-row-title {
+    display: flex;
+    flex-direction: row;
+    gap: 15px;
+}
+
+.backlog-task-row-label {
+    padding: 0px 5px;
+    font-size: 12px;
+    line-height: 2;
+    font-weight: bold;
+    border: 1px solid;
 }
 
 .backlog-task-manage-btns-container {
@@ -44,3 +86,31 @@
     gap: 20px;
     color: gray;
 }
+
+.backlog-search-row {
+    display: flex;
+    padding: 10px 20px;
+    background-color: #FFFFFF;
+    border-radius: 30px;
+    margin-bottom: 20px;
+}
+
+.backlog-search-input-field {
+    width: 100%;
+    border: none;
+}
+
+.backlog-search-icon {
+    align-self: center;
+    color: rgb(179, 179, 179);
+}
+
+.backlog-search-input-field:focus,
+.backlog-search-input-field:active {
+    outline: none;
+}
+
+.backlog-tasks-container {
+    background-color: #FFFFFF;
+}
+
