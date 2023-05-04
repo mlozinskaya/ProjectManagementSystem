@@ -1,11 +1,4 @@
-import {
-  REGISTER_SUCCESS,
-  REGISTER_FAIL,
-  LOGIN_SUCCESS,
-  LOGIN_FAIL,
-  LOGOUT,
-  SET_MESSAGE,
-} from "../../actions/types";
+import * as act from "./constants";
 
 import AuthService from "./service";
 
@@ -13,11 +6,11 @@ export const register = (username, firstName, secondName, email, password) => (d
   return AuthService.register(username, firstName, secondName, email, password).then(
     (response) => {
       dispatch({
-        type: REGISTER_SUCCESS,
+        type: act.REGISTER_SUCCESS,
       });
 
       dispatch({
-        type: SET_MESSAGE,
+        type: act.SET_MESSAGE,
         payload: response.data.message,
       });
 
@@ -32,11 +25,11 @@ export const register = (username, firstName, secondName, email, password) => (d
         error.toString();
 
       dispatch({
-        type: REGISTER_FAIL,
+        type: act.REGISTER_FAIL,
       });
 
       dispatch({
-        type: SET_MESSAGE,
+        type: act.SET_MESSAGE,
         payload: message,
       });
 
@@ -49,7 +42,7 @@ export const login = (username, password) => (dispatch) => {
   return AuthService.login(username, password).then(
     (data) => {
       dispatch({
-        type: LOGIN_SUCCESS,
+        type: act.LOGIN_SUCCESS,
         payload: { user: data },
       });
 
@@ -64,11 +57,11 @@ export const login = (username, password) => (dispatch) => {
         error.toString();
 
       dispatch({
-        type: LOGIN_FAIL,
+        type: act.LOGIN_FAIL,
       });
 
       dispatch({
-        type: SET_MESSAGE,
+        type: act.SET_MESSAGE,
         payload: message,
       });
 
@@ -81,6 +74,6 @@ export const logout = () => (dispatch) => {
   AuthService.logout();
 
   dispatch({
-    type: LOGOUT
+    type: act.LOGOUT
   });
 };

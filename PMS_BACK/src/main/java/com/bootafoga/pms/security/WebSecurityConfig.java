@@ -1,5 +1,6 @@
 package com.bootafoga.pms.security;
 
+import com.bootafoga.pms.model.ERole;
 import com.bootafoga.pms.security.jwt.JwtTokenFilter;
 import com.bootafoga.pms.security.jwt.JwtTokenProvider;
 import com.bootafoga.pms.security.services.UserDetailsServiceImpl;
@@ -62,7 +63,7 @@ public class WebSecurityConfig {
                 .cors().disable()
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers("/api/auth/**").permitAll()
-                        .requestMatchers("/api/test/**").permitAll()
+                        .requestMatchers("/api/test/**").hasRole("ADMIN")
                         .requestMatchers("/projects/**").permitAll()
                         .requestMatchers("/backlog/**").permitAll()
                         .requestMatchers("/dashboard/**").permitAll()

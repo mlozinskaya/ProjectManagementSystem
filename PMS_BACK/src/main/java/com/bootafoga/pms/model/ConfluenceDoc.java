@@ -1,5 +1,6 @@
 package com.bootafoga.pms.model;
 
+import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
@@ -14,9 +15,19 @@ public class ConfluenceDoc {
     @Column(name = "id", unique = true)
     private String id;
 
+    @Nullable
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User author;
+
+    private String creationDate;
+
     @NotBlank
     @Size(max = 20)
     private String name;
+
+    private String description;
+
 
     public ConfluenceDoc(){
     }
