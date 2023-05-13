@@ -56,6 +56,7 @@ public class AuthController {
         List<ERole> roles = user.getRoles().stream().map(Role::getName).collect(Collectors.toList());
         Map<Object, Object> response = new HashMap<>();
         response.put("username", username);
+        response.put("userId", user.getId());
         response.put("token", token);
         response.put("roles", roles);
         return ResponseEntity.ok(response);

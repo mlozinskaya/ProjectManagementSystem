@@ -19,8 +19,8 @@ public class UserService {
         return userRepository.findAll();
     }
 
-    public Optional<User> findById(String id){
-        return userRepository.findById(id);
+    public User findById(String id){
+        return userRepository.findById(id).orElse(null);
     }
 
     public void remove(User user){

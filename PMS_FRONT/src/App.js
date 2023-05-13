@@ -13,6 +13,7 @@ import "./styles/sidebar.css"
 import "./styles/userProfile.css"
 import "./styles/backlog.css"
 import "./styles/dashboard.css"
+import "./styles/confluence.css"
 
 import Login from "./components/Auth/LoginForm";
 import Register from "./components/Auth/RegisterForm";
@@ -42,6 +43,7 @@ import ProjectForm from "./components/AdminPage/Projects/ProjectForm";
 import ConfluencePage from "./components/WorkSpacePage/ConfluencePage/ConfluencePage";
 import DashboardPage from "./components/WorkSpacePage/DashboardPage/DashboardPage";
 import ControlPanelPage from "./components/WorkSpacePage/ControlPanelPage/ControlPanelPage";
+import ConfluenceDocForm from "./components/WorkSpacePage/ConfluencePage/ConfluenceDocForm";
 
 class App extends Component {
   constructor(props) {
@@ -113,13 +115,6 @@ class App extends Component {
           </li>
         )}
 
-        {showModeratorBoard && (
-          <li className="nav-item">
-            <Link to={"/mod"} className="nav-link">
-              Панель модератора
-            </Link>
-          </li>
-        )}
       </div>
     )
   }
@@ -208,11 +203,15 @@ class App extends Component {
         <Route exact path="/admin/rights" component={RightsPage} />
 
         <Route path="/backlog/:mode" render={(props) => (
-          <BacklogTaskForm history={props.history} mode={props.match.params.mode}/>
+          <BacklogTaskForm history={props.history} mode={props.match.params.mode} />
         )} />
 
         <Route path="/backlog" render={(props) => (
           <BacklogPage history={props.history} />
+        )} />
+
+        <Route path="/confluence/add" render={(props) => (
+          <ConfluenceDocForm history={props.history} />
         )} />
 
         <Route path="/confluence" render={(props) => (

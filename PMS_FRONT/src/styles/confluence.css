@@ -1,0 +1,109 @@
+.confluence-page-container{
+    width: 100%;
+    height: 100%;
+    background-color: #FFFFFF;
+}
+
+.confluence-search-row {
+    display: flex;
+    width: 100%;
+}
+
+.confluence-search {
+    display: flex;
+    width: 100%;
+    padding: 10px 20px;
+    height: 40px;
+    background-color: #FFFFFF;
+    border-radius: 30px;
+    margin-bottom: 20px;
+}
+
+.confluence-plus-btn {
+    height: 40px;
+    width: 40px;
+    border: none;
+    background-color: #cccccc;
+    border-radius: 40%;
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+.confluence-section-list-container {
+    padding-top: 30px;
+}
+
+.confluence-section-row {
+    margin-left: 30px;
+    margin-bottom: 20px;
+}
+
+.confluence-doc-row {
+    margin-top: 10px;
+    margin-left: 60px;
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.confluence-doc-icon {
+    margin-right: 10px;
+}
+
+.confluence-form-container {
+    margin: 20px 20px;
+    width: 100%;
+    height: 400px;
+    background-color: #FFFFFF;
+}
+
+.confluence-form-row {
+    width: 100%;
+    display: flex;
+    padding-top: 20px;
+    padding-left: 20px;
+    padding-right: 20px;
+}
+
+.confluence-form-label {
+    width: 150px;
+    margin-top: 5px;
+}
+
+.confluence-form-tags-label{
+    padding-left: 40px;
+    margin-top: 5px;
+    width: 150px;
+}
+
+.confluence-form-name-input {
+    width: 600px;
+}
+
+
+.confluence-form-section-input {
+    width: 200px;
+}
+
+.confluence-form-tags-input {
+    width: 250px;
+}
+
+.confluence-form-textarea-input {
+    width: 750px;
+    min-height: 150px;
+    margin: 10px 20px;
+}
+
+.confulence-form-textarea-icons-container {
+    margin-left: 20px;
+    margin-right: 20px;
+    width: 300px;
+    border: #cecececf 1px solid;
+    display: flex;
+    cursor: pointer;
+}
+
+.confulence-form-textarea-icons-container > * {
+    padding: 5px;
+    margin-right: 5px;
+}

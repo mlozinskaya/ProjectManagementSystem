@@ -15,6 +15,10 @@ public class ConfluenceDoc {
     @Column(name = "id", unique = true)
     private String id;
 
+    @ManyToOne(optional = false, cascade = CascadeType.ALL)
+    @JoinColumn(name = "section_id")
+    private ConfluenceSection section;
+
     @Nullable
     @ManyToOne
     @JoinColumn(name = "user_id")
@@ -23,7 +27,7 @@ public class ConfluenceDoc {
     private String creationDate;
 
     @NotBlank
-    @Size(max = 20)
+    @Size(max = 200)
     private String name;
 
     private String description;
@@ -40,11 +44,43 @@ public class ConfluenceDoc {
         this.id = id;
     }
 
+    public ConfluenceSection getSection() {
+        return section;
+    }
+
+    public void setSection(ConfluenceSection section) {
+        this.section = section;
+    }
+
+    public User getAuthor() {
+        return author;
+    }
+
+    public void setAuthor(User author) {
+        this.author = author;
+    }
+
+    public String getCreationDate() {
+        return creationDate;
+    }
+
+    public void setCreationDate(String creationDate) {
+        this.creationDate = creationDate;
+    }
+
     public String getName() {
         return name;
     }
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 }

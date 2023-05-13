@@ -34,7 +34,7 @@ public class UserController {
 
     @PostMapping("/remove")
     public ResponseEntity<?> remove(@RequestBody UserDTO userDTO) {
-        User user = userService.findById(userDTO.getId()).orElse(null);
+        User user = userService.findById(userDTO.getId());
 
         if (user != null){
             userService.remove(user);

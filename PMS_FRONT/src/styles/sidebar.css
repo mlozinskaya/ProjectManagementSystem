@@ -17,8 +17,11 @@
 }
 
 .sidebar-links {
-    padding-left: 20px;
     padding-top: 15px;
+}
+
+.sidebar-row {
+    padding-left: 20px;
 }
 
 .link-container {
@@ -30,4 +33,8 @@
 .link-icon {
     margin-left: -15px;
     width: 40px;
+}
+
+.side-bar-tab-selected {
+    background-color: #7061AD;
 }

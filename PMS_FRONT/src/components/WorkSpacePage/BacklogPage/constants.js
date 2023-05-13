@@ -20,7 +20,7 @@ export const viewTypes = [
     },
     {
         id: "STORY",
-        name: "ЗАДАЧИ"
+        name: "ИСТОРИИ"
     },
     {
         id: "BUG",
@@ -28,6 +28,21 @@ export const viewTypes = [
     },
     {
         id: "RESEARCH",
-        name: "ИССЛЕДОВАНИЯ"
+        name: "АНАЛИЗЫ"
+    },
+];
+
+export const taskType = [
+    {
+        id: "STORY",
+        name: "ИСТОРИЯ"
+    },
+    {
+        id: "BUG",
+        name: "БАГ"
+    },
+    {
+        id: "RESEARCH",
+        name: "АНАЛИЗ"
     },
 ];

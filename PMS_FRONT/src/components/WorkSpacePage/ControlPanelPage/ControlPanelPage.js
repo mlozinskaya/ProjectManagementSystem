@@ -13,7 +13,7 @@ class ControlPanelPage extends Component {
 
     renderContent() {
         const selectedProject = this.getSelectedProject();
-        return <div> Control panel. Selected project: {selectedProject} </div>
+        return <div> </div>
     }
 
     render() {

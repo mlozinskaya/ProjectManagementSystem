@@ -76,8 +76,7 @@ class Login extends Component {
     }
 
     return (
-      <div className="col-md-12">
-        <div className="card card-container">
+      <div className="col-md-12 card card-container">
           <img
             src="//ssl.gstatic.com/accounts/ui/avatar_2x.png"
             alt="profile-img"
@@ -91,7 +90,7 @@ class Login extends Component {
             }}
           >
             <div className="form-group">
-              <label htmlFor="username">Username</label>
+              <label htmlFor="username">Логин</label>
               <Input
                 type="text"
                 className="form-control"
@@ -103,7 +102,7 @@ class Login extends Component {
             </div>
 
             <div className="form-group">
-              <label htmlFor="password">Password</label>
+              <label htmlFor="password">Пароль</label>
               <Input
                 type="password"
                 className="form-control"
@@ -122,7 +121,7 @@ class Login extends Component {
                 {this.state.loading && (
                   <span className="spinner-border spinner-border-sm"></span>
                 )}
-                <span>Login</span>
+                <span>Авторизоваться</span>
               </button>
             </div>
 
@@ -142,7 +141,6 @@ class Login extends Component {
             />
           </Form>
         </div>
-      </div>
     );
   }
 }

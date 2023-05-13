@@ -4,12 +4,12 @@ import Input from "react-validation/build/input";
 import CheckButton from "react-validation/build/button";
 
 import { connect } from "react-redux";
-import { register } from "../src/components/Auth/actions";
+import { register } from "./actions";
 import {
   notEmpty, usernameValidator, firstNameValidator,
   secondNameValidator, passwordValidator, emailValidator
 }
-  from "../src/components/utils/validators";
+  from "../utils/validators";
 
 
 

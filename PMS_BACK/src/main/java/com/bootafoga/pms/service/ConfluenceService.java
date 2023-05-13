@@ -1,32 +1,48 @@
 package com.bootafoga.pms.service;
 
 import com.bootafoga.pms.model.ConfluenceDoc;
-import com.bootafoga.pms.repository.ConfluenceRepository;
+import com.bootafoga.pms.model.ConfluenceSection;
+import com.bootafoga.pms.repository.ConfluenceDocRepository;
+import com.bootafoga.pms.repository.ConfluenceSectionRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
 public class ConfluenceService {
-    private final ConfluenceRepository confluenceRepository;
+    private final ConfluenceSectionRepository confluenceSectionRepository;
+    private final ConfluenceDocRepository confluenceDocRepository;
 
-    public ConfluenceService(ConfluenceRepository confluenceRepository) {
-        this.confluenceRepository = confluenceRepository;
+    public ConfluenceService(ConfluenceSectionRepository confluenceSectionRepository,
+                             ConfluenceDocRepository confluenceDocRepository) {
+        this.confluenceSectionRepository = confluenceSectionRepository;
+        this.confluenceDocRepository = confluenceDocRepository;
     }
 
-    public Iterable<ConfluenceDoc> findAll(){
-        return confluenceRepository.findAll();
+    public List<ConfluenceSection> getSections() {
+        return confluenceSectionRepository.findAll();
+    }
+
+    public ConfluenceSection findSection(String id) {
+        return confluenceSectionRepository.findById(id).orElse(null);
+    }
+
+    public List<ConfluenceDoc> findAll(){
+        return confluenceDocRepository.findAll();
     }
 
     public Optional<ConfluenceDoc> findById(String id){
-        return confluenceRepository.findById(id);
+        return confluenceDocRepository.findById(id);
     }
 
     public void remove(ConfluenceDoc doc){
-        confluenceRepository.delete(doc);
+        confluenceDocRepository.delete(doc);
     }
 
     public ConfluenceDoc save(ConfluenceDoc doc){
-        return confluenceRepository.save(doc);
+        return confluenceDocRepository.save(doc);
     }
+
+
 }

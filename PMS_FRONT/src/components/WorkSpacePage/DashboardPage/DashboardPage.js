@@ -3,8 +3,8 @@ import { bindActionCreators } from 'redux'
 import { connect } from "react-redux";
 
 import * as actions from "./actions"
-import * as workspaceActions from "../actions"
 import WorkspaceSideBar from "../WorkspaceSideBar";
+import * as cnst from "../BacklogPage/constants";
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { icon } from '@fortawesome/fontawesome-svg-core/import.macro'
@@ -52,7 +52,9 @@ class DashboardPage extends Component {
             const taskItem = <div className="dashboard-card">
                 <div className="dashboard-card-title-type-row">
                     <div className="dashboard-card-title">{task.name}</div>
-                    <div className="dashboard-card-type" style={this.getTypeStyle(task)}>{task.type}</div>
+                    <div className="dashboard-card-type" style={this.getTypeStyle(task)}>
+                        {cnst.taskType.find(type => type.id === task.type).name}
+                    </div>
                 </div>
 
                 <div className="dashboard-card-description">{task.description}</div>

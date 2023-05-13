@@ -119,7 +119,7 @@ class BacklogPage extends Component {
                     <div className="backlog-task-row">
                         <div className="backlog-task-row-title">
                             <div className="backlog-task-row-label" style={this.getRowLabelStyle(item)}>
-                                {item.type}
+                                {cnst.taskType.find(type => type.id === item.type).name}
                             </div>
                             <div>{item.name}</div>
                         </div>

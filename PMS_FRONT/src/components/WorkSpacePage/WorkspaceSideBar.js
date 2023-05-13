@@ -5,8 +5,7 @@ import * as workspaceActions from "./actions"
 
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faTableList } from '@fortawesome/free-solid-svg-icons'
-import { faScroll, faStarHalfStroke } from '@fortawesome/free-solid-svg-icons'
+import { faVial, faTh, faStarHalfStroke, faSortAmountUpAlt, faVoteYea, faBalanceScaleLeft } from '@fortawesome/free-solid-svg-icons'
 import DropdownWithSearch from "../Elements/DropdownWithSearch";
 
 import { history } from '../../helpers/history';
@@ -36,6 +35,14 @@ class WorkspaceSideBar extends Component {
         history.replace("/backlog");
     }
 
+    getClassName(baseUrl){
+        if (window.location.href.includes(baseUrl)) {
+            return "nav-link link-container side-bar-tab-selected";
+        } else {
+            return "nav-link link-container"
+        }
+    }
+
     render() {
         const { workspace } = this.props;
 
@@ -43,6 +50,7 @@ class WorkspaceSideBar extends Component {
         const backlogUrl = "/backlog";
         const dashboardUrl = "/dashboard";
         const controlPanelUrl = "/controlPanel";
+        const testingUrl = "/testing";
 
         return <div className="side-bar-container">
             <div className="sidebar-dropdown">
@@ -55,33 +63,33 @@ class WorkspaceSideBar extends Component {
 
             <div className="sidebar-links">
 
-                <Link to={confluenceUrl} className="nav-link link-container">
-                    <FontAwesomeIcon icon={faStarHalfStroke} className="link-icon" />
+                <Link to={confluenceUrl} className={this.getClassName(confluenceUrl)}>
+                    <FontAwesomeIcon icon={faStarHalfStroke} className="link-icon sidebar-row" />
                     <span>Справочник</span>
                 </Link>
 
-                <Link to={backlogUrl} className="nav-link link-container">
-                    <FontAwesomeIcon icon={faTableList} className="link-icon" />
+                <Link to={backlogUrl} className={this.getClassName(backlogUrl)}>
+                    <FontAwesomeIcon icon={faSortAmountUpAlt} className="link-icon sidebar-row" />
                     <span>Очередь задач</span>
                 </Link>
 
-                <Link to={dashboardUrl} className="nav-link link-container">
-                    <FontAwesomeIcon icon={faScroll} className="link-icon" />
+                <Link to={dashboardUrl} className={this.getClassName(dashboardUrl)}>
+                    <FontAwesomeIcon icon={faTh} className="link-icon sidebar-row" />
                     <span>Панель задач</span>
                 </Link>
 
-                <Link to={controlPanelUrl} className="nav-link link-container">
-                    <FontAwesomeIcon icon={faStarHalfStroke} className="link-icon" />
+                <Link to={testingUrl} className={this.getClassName(testingUrl)}>
+                    <FontAwesomeIcon icon={faVial} className="link-icon sidebar-row" />
                     <span>Тестирование</span>
                 </Link>
 
-                <Link to={controlPanelUrl} className="nav-link link-container">
-                    <FontAwesomeIcon icon={faStarHalfStroke} className="link-icon" />
+                <Link to={controlPanelUrl} className={this.getClassName(controlPanelUrl)}>
+                    <FontAwesomeIcon icon={faVoteYea} className="link-icon sidebar-row" />
                     <span>Релизы</span>
                 </Link>
 
-                <Link to={controlPanelUrl} className="nav-link link-container">
-                    <FontAwesomeIcon icon={faStarHalfStroke} className="link-icon" />
+                <Link to={controlPanelUrl} className={this.getClassName(controlPanelUrl)}>
+                    <FontAwesomeIcon icon={faBalanceScaleLeft} className="link-icon sidebar-row" />
                     <span>Статистика</span>
                 </Link>
             </div>

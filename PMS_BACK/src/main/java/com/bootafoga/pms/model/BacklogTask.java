@@ -32,7 +32,7 @@ public class BacklogTask {
     private TaskStatus status;
 
     @NotBlank
-    @Size(max = 20)
+    @Size(max = 200)
     private String name;
 
     @Size(max = 100)
